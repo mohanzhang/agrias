@@ -1,256 +1,152 @@
-== Welcome to Rails
+== What is this?
 
-Rails is a web-application framework that includes everything needed to create
-database-backed web applications according to the Model-View-Control pattern.
+Agrias is my custom solution to organization. When I originally outgrew the
+basic to-do list, I wrote AccomplishBoard (http://www.accomplishboard.com),
+but it seems now that I've outgrown that as well. I've learned a lot about the
+way I work and stay motivated over the past couple of years since I left school.
+Things are different when there is no GPA at stake, and I caught myself becoming
+less and less productive over time as I slowly lost the "student feeling."
 
-This pattern splits the view (also called the presentation) into "dumb"
-templates that are primarily responsible for inserting pre-built data in between
-HTML tags. The model contains the "smart" domain objects (such as Account,
-Product, Person, Post) that holds all the business logic and knows how to
-persist themselves to a database. The controller handles the incoming requests
-(such as Save New Account, Update Product, Show Post) by manipulating the model
-and directing data to the view.
+I am open-sourcing this project as I can't really imagine a situation in which
+hordes of other people suddenly want to track their lives in the same way that
+I do. In fact, I am not sure how you found this page...
 
-In Rails, the model is handled by what's called an object-relational mapping
-layer entitled Active Record. This layer allows you to present the data from
-database rows as objects and embellish these data objects with business logic
-methods. You can read more about Active Record in
-link:files/vendor/rails/activerecord/README.html.
+== Why "Agrias"?
 
-The controller and view are handled by the Action Pack, which handles both
-layers by its two parts: Action View and Action Controller. These two layers
-are bundled in a single package due to their heavy interdependence. This is
-unlike the relationship between the Active Record and Action Pack that is much
-more separate. Each of these packages can be used independently outside of
-Rails. You can read more about Action Pack in
-link:files/vendor/rails/actionpack/README.html.
+I thought long and hard about what I wanted to call this app, but ultimately I
+realized (again) that no one will actually see this (except you, apparently), so
+it doesn't really matter what I call it. With that said, after spending a few
+hours on Wikipedia looking for an appropriate goddess to name my app after (I
+was going for some kind of protective/wisdom/knowledge deity), and coming up
+short, I went back to my roots. I thought about all the fantasy worlds that I've
+enjoyed over the years, from LOTR to Harry Potter to Bröderna Lejonhjärta, and
+decided that something from the Final Fantasy series would be appropriate. My
+favorite game is indeed Final Fantasy Tactics, and Agrias is a wonderful
+character from that game. Indeed, I would often think how much easier life was
+with Agrias on my squad (assuming Orlandu is considered cheating). Also, if you
+read about her story, you'll also realize what a stand-up gal she is. If I could
+stasis sword some of my tasks and get them to stop, I would do better in life.
 
+== Conceptually, how does this work?
 
-== Getting Started
+There are few different concepts that make up Agrias; they are:
 
-1. At the command prompt, create a new Rails application:
-       <tt>rails new myapp</tt> (where <tt>myapp</tt> is the application name)
+= Buffer
+The buffer is the place where you drop all your quick thoughts. It's like task
+purgatory. At any time, you can process the buffer, which means sorting phrases
+into their rightful types, and giving them some metrics, etc.
 
-2. Change directory to <tt>myapp</tt> and start the web server:
-       <tt>cd myapp; rails server</tt> (run with --help for options)
+= Aspect
+Aspects are tree-like structures that help you define the areas in your life
+that you want to focus on, or that tasks tend to fall in. You can assign relative
+importances to various aspects, which affects the way the tasks show up in
+priority view. Aspects are ultimately task containers.
 
-3. Go to http://localhost:3000/ and you'll see:
-       "Welcome aboard: You're riding Ruby on Rails!"
+= Idea
+Sometimes you have an idea that you want to develop later; just dump this idea in
+the buffer, and sort it as an idea later on. You can attach resources and notes
+to ideas to develop them further later on.
 
-4. Follow the guidelines to start developing your application. You can find
-the following resources handy:
+= Muse
+A muse is a baby aspect in that it represents a small interest that you currently
+have. You can associate resources and tasks with muses, and if you think it
+becomes big enough, you can make it an aspect.
 
-* The Getting Started Guide: http://guides.rubyonrails.org/getting_started.html
-* Ruby on Rails Tutorial Book: http://www.railstutorial.org/
+= Goal
+You can tell Agrias about long-term goals, and Agrias will remind you daily to
+take action on them. If it detects that you've been ignoring your goals for a
+while, it will force you to address the goal first before you can do other stuff.
+You must explicitly say that you've done nothing during this time, or do something
+and record it.
 
+= Appointment
+Appointments represent a future commitment. Agrias will send reminders as the date
+nears. If you miss an appointment, Agrias will use Holy Explosion on your sorry
+ass, so don't miss appointments.
 
-== Debugging Rails
+= Task and subtask
+The basic to-do entities. Tasks require you to assign an importance and a due date.
+Agrias will then automatically prioritize these for you through smart views.
+Subtasks are like phrases, and are lightweight todos that ultimately help you complete
+a task.
 
-Sometimes your application goes wrong. Fortunately there are a lot of tools that
-will help you debug it and get it back on the rails.
+= Visualizations
+This is where the rubber meets the road. All the different entities are really just
+there to help you distinguish between the different types of obligations in life.
+You buffer quickly so that you can capture your stream of consciousness, then later
+you go in and sort everything (this is essentially the precursor to "making a plan").
+The cool part is that Agrias will apply a few algorithms and let you visualize your
+to-do list along different axes, among which are:
 
-First area to check is the application log files. Have "tail -f" commands
-running on the server.log and development.log. Rails will automatically display
-debugging and runtime information to these files. Debugging info will also be
-shown in the browser on requests from 127.0.0.1.
+* Priority. Agrias will calculate what the priority is. Priority is a measure of
+  urgency and importance, balanced by the importance of the aspect that the task
+  falls under. Basically, if you follow the priority list, you will end up doing
+  important things that are urgent, and not do any of the unimportant stuff. This
+  is a good default.
 
-You can also log your own messages directly into the log file from your code
-using the Ruby logger class from inside your controllers. Example:
+* Board. This is a throw-over from AccomplishBoard. See your tasks laid out on a
+  board to get a feel for how backlogged you are. It's also good to visually take
+  in how your aspects are balancing against each other.
 
-  class WeblogController < ActionController::Base
-    def destroy
-      @weblog = Weblog.find(params[:id])
-      @weblog.destroy
-      logger.info("#{Time.now} Destroyed Weblog ID ##{@weblog.id}!")
-    end
-  end
+* Neglect. This is an experimental measure that shows you which aspects of your life
+  have been neglected recently (so that you might want to temporarily increase
+  the priority of those tasks).
 
-The result will be a message in your log file along the lines of:
+== I don't want to install your app, so can you just explain what the usage is like?
 
-  Mon Oct 08 14:22:29 +1000 2007 Destroyed Weblog ID #1!
+Sure. Agrias is a Rails backend with a javascript command-line interface
+simulated in your browser. There is no support for multiple users, although
+because I use Devise, you can easily extend it to do so. After you login as
+yourself, you can type some commands. To exit, just close your browser (duh).
+The available commands are:
 
-More information on how to use the logger is at http://www.ruby-doc.org/core/
+  buf <phrase>
+  - Add a phrase to the buffer
 
-Also, Ruby documentation can be found at http://www.ruby-lang.org/. There are
-several books available online as well:
+  process
+  - Go into process mode and put buffer items into their rightful types
 
-* Programming Ruby: http://www.ruby-doc.org/docs/ProgrammingRuby/ (Pickaxe)
-* Learn to Program: http://pine.fm/LearnToProgram/ (a beginners guide)
+    make (idea|muse|task|appointment|goal|aspect) <json object>
+    - Turn a buffer item into the given type. Pass the object properties as json.
 
-These two books will bring you up to speed on the Ruby language and also on
-programming in general.
+  see (next|board|neglect)
+  - Get a visualization of tasks
 
+  aspects
+  - Go into aspect management mode
 
-== Debugger
+  muses
+  - Go into muse management mode
 
-Debugger support is available through the debugger command when you start your
-Mongrel or WEBrick server with --debugger. This means that you can break out of
-execution at any point in the code, investigate and change the model, and then,
-resume execution! You need to install ruby-debug to run the server in debugging
-mode. With gems, use <tt>sudo gem install ruby-debug</tt>. Example:
+  ideas
+  - Go into idea management mode
 
-  class WeblogController < ActionController::Base
-    def index
-      @posts = Post.find(:all)
-      debugger
-    end
-  end
+  tasks
+  - Go into task management mode
 
-So the controller will accept the action, run the first line, then present you
-with a IRB prompt in the server window. Here you can do things like:
+Inside management mode, you have basic CRUD capabilities.
 
-  >> @posts.inspect
-  => "[#<Post:0x14a6be8
-          @attributes={"title"=>nil, "body"=>nil, "id"=>"1"}>,
-       #<Post:0x14a6620
-          @attributes={"title"=>"Rails", "body"=>"Only ten..", "id"=>"2"}>]"
-  >> @posts.first.title = "hello from a debugger"
-  => "hello from a debugger"
+== Notes
 
-...and even better, you can examine how your runtime objects actually work:
+This software is made available under the MIT License, as follows:
 
-  >> f = @posts.first
-  => #<Post:0x13630c4 @attributes={"title"=>nil, "body"=>nil, "id"=>"1"}>
-  >> f.
-  Display all 152 possibilities? (y or n)
+Copyright (C) 2011 by Mohan Zhang
 
-Finally, when you're ready to resume execution, you can enter "cont".
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-== Console
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
 
-The console is a Ruby shell, which allows you to interact with your
-application's domain model. Here you'll have all parts of the application
-configured, just like it is when the application is running. You can inspect
-domain models, change values, and save to the database. Starting the script
-without arguments will launch it in the development environment.
-
-To start the console, run <tt>rails console</tt> from the application
-directory.
-
-Options:
-
-* Passing the <tt>-s, --sandbox</tt> argument will rollback any modifications
-  made to the database.
-* Passing an environment name as an argument will load the corresponding
-  environment. Example: <tt>rails console production</tt>.
-
-To reload your controllers and models after launching the console run
-<tt>reload!</tt>
-
-More information about irb can be found at:
-link:http://www.rubycentral.com/pickaxe/irb.html
-
-
-== dbconsole
-
-You can go to the command line of your database directly through <tt>rails
-dbconsole</tt>. You would be connected to the database with the credentials
-defined in database.yml. Starting the script without arguments will connect you
-to the development database. Passing an argument will connect you to a different
-database, like <tt>rails dbconsole production</tt>. Currently works for MySQL,
-PostgreSQL and SQLite 3.
-
-== Description of Contents
-
-The default directory structure of a generated Ruby on Rails application:
-
-  |-- app
-  |   |-- controllers
-  |   |-- helpers
-  |   |-- mailers
-  |   |-- models
-  |   `-- views
-  |       `-- layouts
-  |-- config
-  |   |-- environments
-  |   |-- initializers
-  |   `-- locales
-  |-- db
-  |-- doc
-  |-- lib
-  |   `-- tasks
-  |-- log
-  |-- public
-  |   |-- images
-  |   |-- javascripts
-  |   `-- stylesheets
-  |-- script
-  |-- test
-  |   |-- fixtures
-  |   |-- functional
-  |   |-- integration
-  |   |-- performance
-  |   `-- unit
-  |-- tmp
-  |   |-- cache
-  |   |-- pids
-  |   |-- sessions
-  |   `-- sockets
-  `-- vendor
-      `-- plugins
-
-app
-  Holds all the code that's specific to this particular application.
-
-app/controllers
-  Holds controllers that should be named like weblogs_controller.rb for
-  automated URL mapping. All controllers should descend from
-  ApplicationController which itself descends from ActionController::Base.
-
-app/models
-  Holds models that should be named like post.rb. Models descend from
-  ActiveRecord::Base by default.
-
-app/views
-  Holds the template files for the view that should be named like
-  weblogs/index.html.erb for the WeblogsController#index action. All views use
-  eRuby syntax by default.
-
-app/views/layouts
-  Holds the template files for layouts to be used with views. This models the
-  common header/footer method of wrapping views. In your views, define a layout
-  using the <tt>layout :default</tt> and create a file named default.html.erb.
-  Inside default.html.erb, call <% yield %> to render the view using this
-  layout.
-
-app/helpers
-  Holds view helpers that should be named like weblogs_helper.rb. These are
-  generated for you automatically when using generators for controllers.
-  Helpers can be used to wrap functionality for your views into methods.
-
-config
-  Configuration files for the Rails environment, the routing map, the database,
-  and other dependencies.
-
-db
-  Contains the database schema in schema.rb. db/migrate contains all the
-  sequence of Migrations for your schema.
-
-doc
-  This directory is where your application documentation will be stored when
-  generated using <tt>rake doc:app</tt>
-
-lib
-  Application specific libraries. Basically, any kind of custom code that
-  doesn't belong under controllers, models, or helpers. This directory is in
-  the load path.
-
-public
-  The directory available for the web server. Contains subdirectories for
-  images, stylesheets, and javascripts. Also contains the dispatchers and the
-  default HTML files. This should be set as the DOCUMENT_ROOT of your web
-  server.
-
-script
-  Helper scripts for automation and generation.
-
-test
-  Unit and functional tests along with fixtures. When using the rails generate
-  command, template test files will be generated for you and placed in this
-  directory.
-
-vendor
-  External libraries that the application depends on. Also includes the plugins
-  subdirectory. If the app has frozen rails, those gems also go here, under
-  vendor/rails/. This directory is in the load path.
