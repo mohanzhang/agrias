@@ -1,13 +1,6 @@
-- orientation = cycle("left","right")
-.bubble
-  .avatar{:class => orientation}
-    = image_tag "avatar_#{orientation}.png"
-  .content
-    %h3.name
-      = image_tag "speech_bubble_name.png"
-    %p Lorem ipsum dolor sit amet
-    %p Lorem ipsum dolor sit amet
+#output
+  = render :partial => "bubble", :object => "Welcome"
 
 #inputBar
-  = form_tag "" do
-    = text_field_tag ""
+  = form_tag echo_path, :remote => true do
+    = text_field_tag :command
