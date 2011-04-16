@@ -1,0 +1,9 @@
+- orientation = cycle("left","right")
+.bubble
+  .avatar{:class => orientation}
+    = image_tag "avatar_#{orientation}.png"
+  .content
+    %h3.name
+      = image_tag "speech_bubble_name.png"
+    %p Lorem ipsum dolor sit amet
+    %p Lorem ipsum dolor sit amet
