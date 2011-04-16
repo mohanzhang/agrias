@@ -10,7 +10,17 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110416182223) do
+ActiveRecord::Schema.define(:version => 20110416183103) do
+
+  create_table "aspects", :force => true do |t|
+    t.string   "name"
+    t.integer  "weight"
+    t.string   "ancestry"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "aspects", ["ancestry"], :name => "index_aspects_on_ancestry"
 
   create_table "buffer_items", :force => true do |t|
     t.string   "phrase"
