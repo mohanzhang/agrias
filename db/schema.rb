@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110416183103) do
+ActiveRecord::Schema.define(:version => 20110416184430) do
 
   create_table "aspects", :force => true do |t|
     t.string   "name"
@@ -24,6 +24,13 @@ ActiveRecord::Schema.define(:version => 20110416183103) do
 
   create_table "buffer_items", :force => true do |t|
     t.string   "phrase"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "ideas", :force => true do |t|
+    t.string   "synopsis"
+    t.text     "details"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
