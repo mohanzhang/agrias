@@ -26,3 +26,14 @@ end
 Factory.define :muse do |x|
   x.name Faker::Lorem.words(2)
 end
+
+Factory.define :task do |x|
+  x.association :aspect
+  x.description Faker::Lorem.words(5)
+  x.due_on 10.days.from_now
+end
+
+Factory.define :subtask do |x|
+  x.association :task
+  x.description Faker::Lorem.words(5)
+end
