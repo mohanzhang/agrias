@@ -2,7 +2,8 @@
 @import compass/css3
 
 body
-  font: 14px/1.5em "Georgia"
+  background: #444
+  font: 14px/1.5em "Monaco"
 
 .bubble
   float: left
@@ -11,6 +12,7 @@ body
   border: 1px solid #000
   background: url("/images/speech_bubble_bg.png")
   padding: 5px
+  margin: 15px
 
   .avatar
     margin: 0 5px
@@ -25,3 +27,18 @@ body
     float: left
     padding: 0 5px
     h3.name
+
+#inputBar
+  background: #a49d83
+  position: fixed
+  width: 100%
+  bottom: 0
+  padding: 1%
+  border-top: 1px solid #888
+
+  form
+    input[type="text"]
+      width: 96%
+      font-size: 16px
+      padding: 1%
+      border: 1px solid #888
