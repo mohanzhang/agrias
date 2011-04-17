@@ -1,0 +1,8 @@
+%h2
+  = resource.aspect.name
+%p= resource.description
+%p
+  Due in
+  = (resource.due_on - Date.today).to_i
+  days on
+  = resource.due_on
