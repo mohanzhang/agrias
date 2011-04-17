@@ -4,4 +4,5 @@ Agrias::Application.routes.draw do
   match "echo", :to => "terminal#echo"
   
   resources :buffer_items
+  resources :aspects
 end

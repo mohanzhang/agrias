@@ -1,0 +1,9 @@
+%h2
+  Aspect:
+  = resource.name
+%p
+  - if resource.parent
+    Parent:
+    = resource.parent.name
+  - else
+    Root

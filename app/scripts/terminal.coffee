@@ -2,6 +2,8 @@ commandMap =
   "echo (.+)": ["POST", "/echo"]
   "buf (.+)": ["POST", "/buffer_items"]
   "buffer": ["GET", "/buffer_items"]
+  "aspects": ["GET", "/aspects"]
+  "make aspect (.+)": ["POST", "/aspects"]
 
 agriasBubble = (data) => 
   '
@@ -71,6 +73,7 @@ $ () =>
         data:
           args: input.substring(input.indexOf(' '), input.length),
         success: (data) => drawBubble(data,agriasBubble)
+        error: (data) => drawBubble(data.responseText,errorBubble)
         dataType: "html"
       })
     else if routes.length > 1
