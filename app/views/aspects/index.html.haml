@@ -1,5 +1,6 @@
-%h2 Aspects
-%ul
-  - @aspects.each do |aspect|
-    %li= aspect.name
+%table
+  %tr
+    - @aspects.each do |aspect|
+      %td
+        != aspect_tree(aspect)
 

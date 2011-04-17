@@ -3,6 +3,10 @@ class AspectsController < InheritedResources::Base
 
   layout false
 
+  def index
+    @aspects = Aspect.roots
+  end
+
   private
 
   def parse_args_create
