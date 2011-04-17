@@ -5,7 +5,7 @@ commandMap =
 
 agriasBubble = (data) => 
   '
-  <div class="bubble">
+  <div class="bubble result">
     <div class="avatar left">
       <img src="/images/avatar_left.png" />
     </div>
@@ -20,7 +20,7 @@ agriasBubble = (data) =>
   '
 errorBubble = (data) => 
   '
-  <div class="bubble">
+  <div class="bubble error">
     <div class="avatar right">
       <img src="/images/avatar_right.png" />
     </div>
@@ -35,7 +35,7 @@ errorBubble = (data) =>
   '
 commandBubble = (data) =>
   '
-  <div class="bubble">
+  <div class="bubble command">
     <div class="content">
       <h3>
         Command:

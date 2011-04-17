@@ -4,3 +4,4 @@
 #inputBar
   = form_tag "#", :remote => true do
     = text_field_tag :command, nil, :placeholder => "Type a command..."
+    = submit_tag "Send", :id => "test_submit"
