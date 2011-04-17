@@ -2,5 +2,5 @@
   = render :partial => "bubble", :object => "Welcome"
 
 #inputBar
-  = form_tag echo_path, :remote => true do
-    = text_field_tag :command
+  = form_tag "#", :remote => true do
+    = text_field_tag :command, nil, :placeholder => "Type a command..."
