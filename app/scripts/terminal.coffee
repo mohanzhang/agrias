@@ -53,6 +53,8 @@ commandBubble = (data) =>
 
 drawBubble = (data,template) =>
   $("#output").append(template(data))
+  # Enable REST in place for server responses
+  $(".rest_in_place").rest_in_place()
 
 $ () =>
   # Process input and clear the command bar
@@ -91,4 +93,3 @@ $ () =>
   # Scroll to bottom of page for all ajax requests
   $(document).ajaxComplete () =>
     $("html body").animate({scrollTop: $(document).height()}, "slow")
-
