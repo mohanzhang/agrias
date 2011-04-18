@@ -1,6 +1,6 @@
 %h2
   Aspect:
-  = resource.name
+  != rip_element(resource, :name)
 %p
   - if resource.parent
     Parent:
