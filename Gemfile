@@ -16,7 +16,7 @@ gem 'haml-rails'
 gem 'compass', '>=0.10.3'
 gem 'acts_as_list'
 gem 'ancestry'
-gem 'inherited_resources', '>=1.1.2'
+gem 'inherited_resources', '>=1.2.2'
 gem 'jquery-rails'
 
 group :test do
