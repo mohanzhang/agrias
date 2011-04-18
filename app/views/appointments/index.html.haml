@@ -1,0 +1,6 @@
+%h2 Appointments
+%ul
+  - @appointments.each do |appt|
+    %li
+      = appt.description
+      (#{appt.occurs_at})

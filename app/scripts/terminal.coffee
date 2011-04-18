@@ -3,8 +3,10 @@ commandMap =
   "buf (.+)": ["POST", "/buffer_items"]
   "buffer": ["GET", "/buffer_items"]
   "aspects": ["GET", "/aspects"]
+  "appts": ["GET", "/appointments"]
   "make aspect (.+)": ["POST", "/aspects"]
   "make task (.+)": ["POST", "/tasks"]
+  "make appt (.+)": ["POST", "/appointments"]
 
 agriasBubble = (data) => 
   '

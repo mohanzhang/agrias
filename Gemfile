@@ -18,6 +18,7 @@ gem 'acts_as_list'
 gem 'ancestry'
 gem 'inherited_resources', '>=1.2.2'
 gem 'jquery-rails'
+gem 'chronic', :git => "git://github.com/johnf/chronic.git"
 
 group :test do
   gem 'database_cleaner'

@@ -1,3 +1,9 @@
+GIT
+  remote: git://github.com/johnf/chronic.git
+  revision: 8e93888a3731fdc29a3680f1ca541275fb0b5c63
+  specs:
+    chronic (0.3.9)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -199,6 +205,7 @@ DEPENDENCIES
   ancestry
   barista
   capybara
+  chronic!
   compass (>= 0.10.3)
   cucumber-rails (>= 0.4.1)
   database_cleaner
