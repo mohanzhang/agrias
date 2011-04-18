@@ -1,23 +1,9 @@
 class AspectsController < InheritedResources::Base
-  before_filter :parse_args_create, :only => [:create]
+  before_filter :pass_args, :only => [:create]
 
   layout false
 
   def index
     @aspects = Aspect.roots
-  end
-
-  private
-
-  def parse_args_create
-    unless params[:aspect]
-      params[:aspect] = {}
-      if params[:args].match(/aspect (.+) under (.+)/)
-        params[:aspect][:name] = $1
-        params[:aspect][:parent_clue] = $2
-      elsif params[:args].match(/aspect (.+)/)
-        params[:aspect][:name] = $1
-      end
-    end
   end
 end

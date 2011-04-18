@@ -3,11 +3,32 @@ class Aspect < ActiveRecord::Base
 
   has_ancestry
   
-  attr_accessor :parent_clue
+  attr_accessor :args
 
   before_validation(:on => :create) do
-    if self.parent_clue
-      self.parent = Aspect.where("name like ?", self.parent_clue + "%").first
+    process_args! if self.args
+  end
+
+  private
+
+  def process_args!
+    if self.args.match(/aspect (.+) under (.+)/)
+      name = $1
+      parent_clue = $2
+
+      parents = Aspect.where("name like ?", parent_clue + "%")
+      
+      if parents.size > 1
+        self.errors.add(:args, "specified an ambiguous parent")
+      elsif parents.size == 0
+        self.errors.add(:args, "specified a parent that did not exist")
+      else
+        self.parent = parents.first
+      end
+
+      self.name = name
+    elsif self.args.match(/aspect (.+)/)
+      self.name = $1
     end
   end
       

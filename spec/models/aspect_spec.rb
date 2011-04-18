@@ -24,10 +24,19 @@ describe Aspect do
     parent.children.count.should == 1
   end
 
-  it "can be created underneath a parent" do
-    parent = Factory.create(:aspect, :name => "Work and stuff")
-    child = Factory.create(:aspect, :name => "Meetings", :parent_clue => "work")
+  describe "create using args" do
+    before :each do
+      @aspect = Factory.create(:aspect, :name => "Work and stuff")
+    end
 
-    child.parent.should == parent
+    it "can be created underneath a parent" do
+      aspect = Factory.create(:aspect, :args => "aspect test under work")
+      aspect.parent.should == @aspect
+    end
+
+    it "can be created as a root" do
+      aspect = Factory.create(:aspect, :args => "aspect Hello")
+      aspect.name.should == "Hello"
+    end
   end
 end

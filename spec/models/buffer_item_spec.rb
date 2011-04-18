@@ -22,4 +22,11 @@ describe BufferItem do
     bs[1].should == b1
     bs[2].should == b3
   end
+
+  describe "create using args" do
+    it "can be created with a phrase" do
+      buffer_item = Factory.create(:buffer_item, :args => "anything at all")
+      buffer_item.phrase.should == "anything at all"
+    end
+  end
 end
