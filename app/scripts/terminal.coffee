@@ -2,7 +2,7 @@ commandMap =
   "echo (.+)": ["POST", "/echo"]
 
   "buf$": ["GET", "/buffer_items"]
-  "aspects": ["GET", "/aspects"]
+  "aspects$": ["GET", "/aspects"]
   "appts": ["GET", "/appointments"]
 
   "buf (.+)": ["POST", "/buffer_items"]
@@ -10,65 +10,27 @@ commandMap =
   "mk task (.+)": ["POST", "/tasks"]
   "mk appt (.+)": ["POST", "/appointments"]
 
-agriasBubble = (data) => 
-  '
-  <div class="bubble result">
-    <div class="avatar left">
-      <img src="/images/avatar_left.png" />
-    </div>
-    <div class="content">
-      <h3 class="name">
-        <img src="/images/speech_bubble_name.png" />
-      </h3>
-      ' + data + '
-    </div>
-  </div>
-  <div class="clear" />
-  '
-errorBubble = (data) => 
-  '
-  <div class="bubble error">
-    <div class="avatar right">
-      <img src="/images/avatar_right.png" />
-    </div>
-    <div class="content">
-      <h3 class="name">
-        <img src="/images/speech_bubble_name.png" />
-      </h3>
-      ' + data + '
-    </div>
-  </div>
-  <div class="clear" />
-  '
-commandBubble = (data) =>
-  '
-  <div class="bubble command">
-    <div class="content">
-      <h3>
-        Command:
-      </h3>
-      ' + data + '
-    </div>
-  </div>
-  <div class="clear" />
-  '
+writeLine = (outputObject, afterWriteTriggers) =>
+  line = new OutputLine(outputLineId, afterWriteTriggers)
+  outputLines[outputLineId] = line
+  line.append(outputObject)
+  line.write()
+  outputLineId++
 
-drawBubble = (data,template) =>
-  bubble = $(template(data))
-  bubble.find(".rest_in_place").rest_in_place()
-  $("#output").append(bubble)
-  # Enable REST in place for server responses
+outputLineId = 0 # TODO attach this to the #output dom element
+outputLines = {}
 
 $ () =>
   # Process input and clear the command bar
   $("#inputBar form").bind 'submit', (e) =>
+    e.preventDefault()
+
     input = $("#command").val()
 
     if input is ""
-      e.preventDefault()
       return false
-
-    drawBubble(input, commandBubble)
+    
+    writeLine(new CommandBubble(input))
 
     routes = []
     for expr, route of commandMap
@@ -80,16 +42,23 @@ $ () =>
         url: routes[0][1],
         data:
           args: input.substring(input.indexOf(' '), input.length),
-        success: (data) => drawBubble(data,agriasBubble)
-        error: (data) => drawBubble(data.responseText,errorBubble)
+        success: (data) =>
+          writeLine(new ResultBubble(data), [
+            ((id, object) => object.find(".rest_in_place").rest_in_place()),
+            ((id, object) => 
+              object.find("a[data-output-mode=extend]").click (e) =>
+                e.preventDefault()
+                $.get(e.target, null, ((data) => outputLines[id].extend(data)), "html"))
+            ])
+
+        error: (data) => writeLine(new ErrorBubble(data.responseText))
         dataType: "html"
       })
     else if routes.length > 1
-      $.post("/echo", {args: "Command '#{input}' is ambiguous between #{routes}"}, ((data) => drawBubble(data, errorBubble)), "html")
+      $.post("/echo", {args: "Command '#{input}' is ambiguous between #{routes}"}, ((data) => writeLine(new ErrorBubble(data))), "html")
     else
-      $.post("/echo", {args: "Command '#{input}' was not recognized"}, ((data) => drawBubble(data, errorBubble)), "html")
+      $.post("/echo", {args: "Command '#{input}' was not recognized"}, ((data) => writeLine(new ErrorBubble(data))), "html")
 
-    e.preventDefault()
     $("#command").val('')
     return false
 

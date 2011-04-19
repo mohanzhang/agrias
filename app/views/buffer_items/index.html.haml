@@ -1,4 +1,4 @@
 %ol
   - @buffer_items.each do |buffer_item|
     %li
-      != rip_element(buffer_item, :phrase)
+      = link_to buffer_item.phrase, buffer_item_path(buffer_item), "data-output-mode" => "extend"
