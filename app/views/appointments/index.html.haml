@@ -2,5 +2,5 @@
 %ul
   - @appointments.each do |appt|
     %li
-      != rip_element(appt, :description)
+      = link_to appt.description, appointment_path(appt), :remote => true, "data-output-mode" => "extend"
       (#{appt.occurs_at})
