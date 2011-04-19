@@ -1,3 +1,3 @@
 %h2 Appointment
-%p= resource.description
+%p!= rip_element(resource, :description)
 %p= resource.occurs_at
