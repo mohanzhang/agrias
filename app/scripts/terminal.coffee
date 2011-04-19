@@ -10,6 +10,8 @@ commandMap =
   "mk task (.+)": ["POST", "/tasks"]
   "mk appt (.+)": ["POST", "/appointments"]
 
+  "next":["GET", "/visualization/priority"]
+
 writeLine = (outputObject, afterWriteTriggers) =>
   line = new OutputLine(outputLineId, afterWriteTriggers)
   outputLines[outputLineId] = line

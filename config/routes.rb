@@ -7,4 +7,8 @@ Agrias::Application.routes.draw do
   resources :aspects
   resources :tasks
   resources :appointments
+
+  resource :visualization do
+    get :priority
+  end
 end
