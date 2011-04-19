@@ -52,9 +52,10 @@ commandBubble = (data) =>
   '
 
 drawBubble = (data,template) =>
-  $("#output").append(template(data))
+  bubble = $(template(data))
+  bubble.find(".rest_in_place").rest_in_place()
+  $("#output").append(bubble)
   # Enable REST in place for server responses
-  $(".rest_in_place").rest_in_place()
 
 $ () =>
   # Process input and clear the command bar
