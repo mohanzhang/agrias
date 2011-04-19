@@ -8,6 +8,7 @@ Feature: Tasks
 
   @javascript
   Scenario: Create a task from a buffer item
-    When I enter the command "mk task 2 under pets due in 5 days"
+    When I enter the command "mk task 2 under pets due in 5 days i2"
     Then I should see a result with "Buy a dog first"
     And I should see a result with "Due in 5 days"
+    And I should see a result with "Important"

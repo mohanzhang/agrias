@@ -4,6 +4,7 @@ class Task < ActiveRecord::Base
   validates :aspect_id, :presence => true
   validates :description, :presence => true
   validates :due_on, :presence => true
+  validates :importance, :presence => true, :inclusion => {:in => 1..3}
 
   attr_accessor :args
 
@@ -26,10 +27,8 @@ class Task < ActiveRecord::Base
 
       self.description = BufferItem.all[buffer_item_index.to_i - 1].phrase
       self.aspect = (a = Aspect.where("name like ?", aspect_clue + "%")) ? a.first : a
-      if due_string=~ /in (\d+) day(s|)/
-        self.due_on = $1.to_i.days.from_now.to_date
-      elsif due_string =~ /on (.+)/
-        self.due_on = Date.parse($1)
+      if (time = Chronic.parse(due_string))
+        self.due_on = time.to_date
       else
         self.errors.add(:args, "did not specify a due date")
       end

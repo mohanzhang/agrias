@@ -30,7 +30,8 @@ end
 Factory.define :task do |x|
   x.association :aspect
   x.description Faker::Lorem.words(5)
-  x.due_on 10.days.from_now
+  x.due_on 10.days.from_now.to_date
+  x.importance 2
 end
 
 Factory.define :subtask do |x|
