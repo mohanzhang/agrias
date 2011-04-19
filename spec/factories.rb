@@ -7,6 +7,7 @@ end
 
 Factory.define :aspect do |x|
   x.name Faker::Lorem.words(1)
+  x.weight 2
 end
 
 Factory.define :buffer_item do |x|

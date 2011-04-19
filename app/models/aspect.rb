@@ -1,5 +1,8 @@
 class Aspect < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => true
+  validates :weight, :presence => true, :inclusion => {:in => 1..3}
+
+  default_scope order("weight DESC")
 
   has_ancestry
   

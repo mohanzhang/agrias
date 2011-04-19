@@ -12,8 +12,20 @@ describe Aspect do
     Factory.build(:aspect, :name => "asdf").should_not be_valid
   end
 
-  it "can set a weight" do
-    Factory.create(:aspect, :weight => 4).weight.should == 4
+  it "requires a weight between 1 and 3 inclusive" do
+    assert_presence(:aspect, :weight)
+    assert_range(:aspect, :weight, 1..3)
+  end
+
+  it "has a default scope of weight DESC" do
+    a1 = Factory.create(:aspect, :weight => 2)
+    a2 = Factory.create(:aspect, :weight => 3)
+    a3 = Factory.create(:aspect, :weight => 1)
+
+    as = Aspect.all
+    as[0].should == a2
+    as[1].should == a1
+    as[2].should == a3
   end
 
   it "has ancestry" do
