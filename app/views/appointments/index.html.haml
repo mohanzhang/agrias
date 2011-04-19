@@ -3,5 +3,4 @@
   - @appointments.each do |appt|
     %li
       != rip_element(appt, :description)
-      = surround '(', ')' do
-        != rip_element(appt, :occurs_at)
+      (#{appt.occurs_at})

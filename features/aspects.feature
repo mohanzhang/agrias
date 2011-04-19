@@ -13,12 +13,12 @@ Feature: Aspects
 
   @javascript
   Scenario: Make a new root aspect
-    When I enter the command "make aspect Hello"
+    When I enter the command "mk aspect Hello"
     Then I should see a result with "Hello"
     And I should see a result with "Root"
 
   @javascript
   Scenario: Make a new child aspect
-    When I enter the command "make aspect Hello under Social"
+    When I enter the command "mk aspect Hello under Social"
     Then I should see a result with "Hello"
     And I should see a result with "Parent: Social"

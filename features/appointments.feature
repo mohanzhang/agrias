@@ -7,7 +7,7 @@ Feature: Appointments
 
   @javascript
   Scenario: Create an appointment from a buffer item
-    When I enter the command "make appt 2 5 days from now at 10 am"
+    When I enter the command "mk appt 2 5 days from now at 10 am"
     Then I should see a result with "Buy a dog first"
 
   @javascript

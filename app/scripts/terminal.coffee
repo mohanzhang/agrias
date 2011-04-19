@@ -1,12 +1,14 @@
 commandMap =
   "echo (.+)": ["POST", "/echo"]
-  "buf (.+)": ["POST", "/buffer_items"]
-  "buffer": ["GET", "/buffer_items"]
+
+  "buf$": ["GET", "/buffer_items"]
   "aspects": ["GET", "/aspects"]
   "appts": ["GET", "/appointments"]
-  "make aspect (.+)": ["POST", "/aspects"]
-  "make task (.+)": ["POST", "/tasks"]
-  "make appt (.+)": ["POST", "/appointments"]
+
+  "buf (.+)": ["POST", "/buffer_items"]
+  "mk aspect (.+)": ["POST", "/aspects"]
+  "mk task (.+)": ["POST", "/tasks"]
+  "mk appt (.+)": ["POST", "/appointments"]
 
 agriasBubble = (data) => 
   '

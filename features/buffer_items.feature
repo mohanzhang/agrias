@@ -7,7 +7,7 @@ Feature: Buffer items
 
   @javascript
   Scenario: List buffer items
-    When I enter the command "buffer"
+    When I enter the command "buf"
     Then I should see a result with "Walk the dog"
     And I should see a result with "Buy a dog first"
 
