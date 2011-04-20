@@ -5,14 +5,24 @@ class Aspect < ActiveRecord::Base
   validates :name, :presence => true, :uniqueness => true
   validates :weight, :presence => true, :inclusion => {:in => 1..3}
 
-  default_scope order("weight DESC")
-
   has_ancestry
   
   attr_accessor :args
 
   before_validation(:on => :create) do
     process_args! if self.args
+  end
+
+  # an aspect's tasks is its tasks in priority order and then the tasks of
+  # its children by weight
+  def tasks
+    ret = Task.where(:aspect_id => self.id).order("importance DESC").all
+    if self.has_children?
+      self.children.order("weight DESC").each do |aspect|
+        ret << aspect.tasks
+      end
+    end
+    return ret.flatten
   end
 
   private

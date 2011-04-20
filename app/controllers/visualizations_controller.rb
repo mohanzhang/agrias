@@ -1,5 +1,5 @@
 class VisualizationsController < ApplicationController
   def priority
-    @tasks = Task.all
+    @tasks = current_user.tasks(5)
   end
 end

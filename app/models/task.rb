@@ -1,6 +1,7 @@
 class Task < ActiveRecord::Base
   belongs_to :aspect
 
+  validates :aspect, :leaf => true
   validates :aspect_id, :presence => true
   validates :description, :presence => true
   validates :due_on, :presence => true
@@ -15,6 +16,10 @@ class Task < ActiveRecord::Base
   after_save(:on => :create) do
     origin = BufferItem.find_by_phrase(self.description)
     origin.destroy if origin
+  end
+
+  def weight
+    Aspect.find(self.aspect.path_ids).map {|a| a.weight}
   end
 
   private

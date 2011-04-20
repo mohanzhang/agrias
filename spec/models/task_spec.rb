@@ -20,6 +20,26 @@ describe Task do
     assert_range(:task, :importance, 1..3)
   end
 
+  it "cannot be created under an aspect that has children aspects" do
+    parent = Factory.create(:aspect)
+    child = Factory.create(:aspect, :parent => parent)
+    Factory.build(:task, :aspect => parent).should_not be_valid
+    Factory.build(:task, :aspect => child).should be_valid
+  end
+
+  it "can provide a list of weights" do
+    a1 = Factory.create(:aspect, :weight => 3)
+    a11 = Factory.create(:aspect, :parent => a1, :weight => 2)
+    a111 = Factory.create(:aspect, :parent => a11, :weight => 3)
+    a12 = Factory.create(:aspect, :parent => a1, :weight => 1)
+
+    a111t1 = Factory.create(:task, :aspect => a111)
+    a12t1 = Factory.create(:task, :aspect => a12)
+
+    a111t1.weight.should == [3,2,3]
+    a12t1.weight.should == [3,1]
+  end
+
   describe "create using args" do
     before :each do
       @user = Factory.create(:user)

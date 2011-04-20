@@ -2,6 +2,7 @@ require 'spec_helper'
 
 describe Aspect do
   include ActiveModelHelpers
+  include ActiveRecordHelpers
 
   it "must belong to a user" do
     assert_presence(:aspect, :user)
@@ -21,23 +22,44 @@ describe Aspect do
     assert_range(:aspect, :weight, 1..3)
   end
 
-  it "has a default scope of weight DESC" do
-    a1 = Factory.create(:aspect, :weight => 2)
-    a2 = Factory.create(:aspect, :weight => 3)
-    a3 = Factory.create(:aspect, :weight => 1)
-
-    as = Aspect.all
-    as[0].should == a2
-    as[1].should == a1
-    as[2].should == a3
-  end
-
   it "has ancestry" do
     parent = Factory.create(:aspect)
     child = Factory.create(:aspect, :parent => parent)
 
     parent.reload
     parent.children.count.should == 1
+  end
+
+  describe "tasks" do
+    it "can have many tasks" do
+      assert_has_many(:aspect, :tasks)
+    end
+
+    it "returns the regular set of tasks in importance DESC if the aspect is a leaf" do
+      aspect = Factory.create(:aspect)
+      t1 = Factory.create(:task, :aspect => aspect, :importance => 1)
+      t2 = Factory.create(:task, :aspect => aspect, :importance => 3)
+
+      aspect.tasks.first.should == t2
+      aspect.tasks.last.should == t1
+    end
+
+    it "represents all the tasks of all its descendants if the aspect is not a leaf" do
+      a1 = Factory.create(:aspect, :weight => 2)
+      a1t1 = Factory.create(:task, :aspect => a1, :importance => 1)
+      a1t2 = Factory.create(:task, :aspect => a1, :importance => 3)
+      a11 = Factory.create(:aspect, :parent => a1, :weight => 1)
+      a11t1 = Factory.create(:task, :aspect => a11, :importance => 2)
+      a12 = Factory.create(:aspect, :parent => a1, :weight => 3)
+      a12t1 = Factory.create(:task, :aspect => a12, :importance => 2)
+
+      ts = a1.tasks
+      ts.size.should == 4
+      ts[0].id.should == a1t2.id
+      ts[1].id.should == a1t1.id
+      ts[2].id.should == a12t1.id
+      ts[3].id.should == a11t1.id
+    end
   end
 
   describe "create using args" do
