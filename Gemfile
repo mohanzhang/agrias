@@ -14,6 +14,7 @@ end
 gem 'barista'
 gem 'haml-rails'
 gem 'compass', '>=0.10.3'
+gem 'devise', '>=1.3.1'
 gem 'acts_as_list'
 gem 'ancestry'
 gem 'inherited_resources', '>=1.2.2'

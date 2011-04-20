@@ -1,6 +1,8 @@
 class CreateAspects < ActiveRecord::Migration
   def self.up
     create_table :aspects do |t|
+      t.references :user
+
       t.string :name
       t.integer :weight
 

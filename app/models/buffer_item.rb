@@ -1,4 +1,7 @@
 class BufferItem < ActiveRecord::Base
+  belongs_to :user
+  validates :user_id, :presence => true
+
   validates :phrase, :presence => true, :uniqueness => true
 
   default_scope order("created_at ASC")

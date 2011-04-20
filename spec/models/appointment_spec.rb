@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Appointment do
   include ActiveModelHelpers
 
+  it "must belong to a user" do
+    assert_presence(:appointment, :user)
+  end
+
   it "requires a description" do
     assert_presence(:appointment, :description)
   end

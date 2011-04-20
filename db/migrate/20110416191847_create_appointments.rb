@@ -1,6 +1,8 @@
 class CreateAppointments < ActiveRecord::Migration
   def self.up
     create_table :appointments do |t|
+      t.references :user
+
       t.string :description
       t.text :notes
 

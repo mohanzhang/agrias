@@ -3,6 +3,10 @@ require 'spec_helper'
 describe BufferItem do
   include ActiveModelHelpers
 
+  it "must belong to a user" do
+    assert_presence(:buffer_item, :user)
+  end
+
   it "requires a phrase" do
     assert_presence(:buffer_item, :phrase)
   end

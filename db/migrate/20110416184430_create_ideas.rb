@@ -1,6 +1,8 @@
 class CreateIdeas < ActiveRecord::Migration
   def self.up
     create_table :ideas do |t|
+      t.references :user
+
       t.string :synopsis
       t.text :details
 

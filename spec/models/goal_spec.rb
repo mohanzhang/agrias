@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Goal do
   include ActiveModelHelpers
 
+  it "must belong to a user" do
+    assert_presence(:goal, :user)
+  end  
+
   it "requires a statement" do
     assert_presence(:goal, :statement)
   end

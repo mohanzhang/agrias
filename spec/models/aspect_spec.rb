@@ -3,6 +3,10 @@ require 'spec_helper'
 describe Aspect do
   include ActiveModelHelpers
 
+  it "must belong to a user" do
+    assert_presence(:aspect, :user)
+  end
+
   it "requires a name" do
     assert_presence(:aspect, :name)
   end

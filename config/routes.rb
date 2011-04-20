@@ -1,4 +1,6 @@
 Agrias::Application.routes.draw do
+  devise_for :users
+
   root :to => "terminal#index"
 
   match "echo", :to => "terminal#echo"
