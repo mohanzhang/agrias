@@ -1,5 +1,6 @@
 commandMap =
   "echo (.+)": ["POST", "/echo"]
+  "logout": ["REDIRECT", "/users/sign_out"]
 
   "buf$": ["GET", "/buffer_items"]
   "aspects$": ["GET", "/aspects"]
@@ -39,6 +40,10 @@ $ () =>
       routes.push(route) if input.match(new RegExp(expr))
         
     if routes.length is 1
+      if routes[0][0] is "REDIRECT"
+        window.location.replace(routes[0][1])
+        return false
+
       $.ajax({
         type: routes[0][0],
         url: routes[0][1],

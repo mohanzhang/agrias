@@ -1,10 +1,17 @@
 @import compass/reset
+@import compass/utilities
 @import compass/css3
 
 body
   background: #444
   font: 14px/1.5em "Monaco"
   padding-bottom: 80px
+
+a
+  +link-colors(#245)
+  text-decoration: none
+  &:hover
+    text-decoration: underline
 
 .clear
   clear: both
@@ -23,6 +30,26 @@ body
     .pointer
       float: left
       margin-left: -50px
+
+  &.dialog
+    float: none
+    width: 400px
+    margin: 40px auto
+    padding: 20px
+
+    form
+      width: 100%
+      input[type="email"], input[type="password"]
+        width: 96%
+        border: 1px solid #888
+        padding: 2%
+        font-size: 162%
+      .option
+        clear: right
+        margin-top: 10px
+        float: right
+    .formLinks
+      margin-top: 20px
 
   .avatar
     margin: 0 5px
