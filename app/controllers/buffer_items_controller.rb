@@ -20,4 +20,10 @@ class BufferItemsController < InheritedResources::Base
       format.json { render :nothing => true }
     end
   end
+
+  protected
+
+  def begin_of_association_chain
+    current_user
+  end
 end

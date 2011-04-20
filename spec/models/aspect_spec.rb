@@ -42,17 +42,22 @@ describe Aspect do
 
   describe "create using args" do
     before :each do
-      @aspect = Factory.create(:aspect, :name => "Work and stuff")
+      @aspect = Factory.create(:aspect, :name => "Work and stuff 1")
     end
 
     it "can be created underneath a parent" do
-      aspect = Factory.create(:aspect, :args => "aspect test under work")
+      aspect = Factory.create(:aspect, :args => "aspect test under work 3")
       aspect.parent.should == @aspect
     end
 
     it "can be created as a root" do
-      aspect = Factory.create(:aspect, :args => "aspect Hello")
+      aspect = Factory.create(:aspect, :args => "aspect Hello 2")
       aspect.name.should == "Hello"
+    end
+
+    it "should be created with a weight" do
+      aspect = Factory.create(:aspect, :args => "aspect Hello 3")
+      aspect.weight.should == 3
     end
   end
 end

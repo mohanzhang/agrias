@@ -6,7 +6,7 @@ class Task < ActiveRecord::Base
   validates :due_on, :presence => true
   validates :importance, :presence => true, :inclusion => {:in => 1..3}
 
-  attr_accessor :args
+  attr_accessor :args, :user_id
 
   before_validation(:on => :create) do
     process_args! if self.args
@@ -20,13 +20,16 @@ class Task < ActiveRecord::Base
   private
 
   def process_args!
-    self.args.match(/task (\d+) under (.+) due (.+)/) do |match|
+    current_user = User.find(self.user_id)
+    self.args.match(/task (\d+) under (.+) due (.+) i(\d)/) do |match|
       buffer_item_index = match[1]
       aspect_clue = match[2]
       due_string = match[3]
+      importance = match[4].to_i
 
-      self.description = BufferItem.all[buffer_item_index.to_i - 1].phrase
-      self.aspect = (a = Aspect.where("name like ?", aspect_clue + "%")) ? a.first : a
+      self.aspect = (a = current_user.aspects.where("name like ?", aspect_clue + "%")) ? a.first : a
+      self.description = current_user.buffer_items.all[buffer_item_index.to_i - 1].phrase
+      self.importance = importance
       if (time = Chronic.parse(due_string))
         self.due_on = time.to_date
       else

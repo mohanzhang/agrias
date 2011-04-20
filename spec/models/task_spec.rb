@@ -22,29 +22,30 @@ describe Task do
 
   describe "create using args" do
     before :each do
-      @buffer_item = Factory.create(:buffer_item, :phrase => "walk the dog")
-      @aspect = Factory.create(:aspect, :name => "Work and stuff")
+      @user = Factory.create(:user)
+      @buffer_item = Factory.create(:buffer_item, :user => @user, :phrase => "walk the dog")
+      @aspect = Factory.create(:aspect, :user => @user, :name => "Work and stuff")
     end
 
     it "can be created underneath a parent" do
-      task = Factory.create(:task, :args => "task 1 under work due in 2 days i1")
+      task = Factory.create(:task, :args => "task 1 under work due in 2 days i1", :user_id => @user.id)
       task.aspect.should == @aspect
     end
 
     it "can be assigned a due date using days" do
-      task = Factory.create(:task, :args => "task 1 under work due in 2 days i2")
+      task = Factory.create(:task, :args => "task 1 under work due in 2 days i2", :user_id => @user.id)
       task.due_on.should == 2.days.from_now.to_date
     end
 
     it "can be assigned a due date using a date" do
-      task = Factory.create(:task, :args => "task 1 under work due Apr 12, 2011 i3")
+      task = Factory.create(:task, :args => "task 1 under work due Apr 12, 2011 i3", :user_id => @user.id)
       task.due_on.should == Date.new(2011,4,12)
       #TODO this breaks when the month is in the new year
     end
 
     it "can assign the importance" do
-      task = Factory.create(:task, :args => "task 1 under work due 4/12/11 i2")
-      task.importance.should == 2
+      task = Factory.create(:task, :args => "task 1 under work due 4/12/11 i3", :user_id => @user.id)
+      task.importance.should == 3
     end
   end
 end

@@ -1,5 +1,6 @@
 Feature: Basic terminal functions
   Background:
+    Given I am signed in
     When I go to the terminal
 
   @javascript

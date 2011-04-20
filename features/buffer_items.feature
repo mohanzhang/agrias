@@ -1,8 +1,9 @@
 Feature: Buffer items
 
   Background:
-    Given a buffer item exists with phrase: "Walk the dog"
-    And a buffer item exists with phrase: "Buy a dog first"
+    Given I am signed in
+    And a buffer item exists with phrase: "Walk the dog", user: user "current user"
+    And a buffer item exists with phrase: "Buy a dog first", user: user "current user"
     When I go to the terminal
 
   @javascript

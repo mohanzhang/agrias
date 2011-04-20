@@ -18,9 +18,10 @@ class Aspect < ActiveRecord::Base
   private
 
   def process_args!
-    if self.args.match(/aspect (.+) under (.+)/)
+    if self.args.match(/aspect (.+) under (.+) (\d)/)
       name = $1
       parent_clue = $2
+      weight = $3.to_i
 
       parents = Aspect.where("name like ?", parent_clue + "%")
       
@@ -33,8 +34,10 @@ class Aspect < ActiveRecord::Base
       end
 
       self.name = name
-    elsif self.args.match(/aspect (.+)/)
+      self.weight = weight
+    elsif self.args.match(/aspect (.+) (\d)/)
       self.name = $1
+      self.weight = $2.to_s
     end
   end
       
