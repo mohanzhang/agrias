@@ -1,6 +1,7 @@
+.actions
+  = surround '[', ']' do
+    = delete_link resource
+
 %h2 Appointment
 %p!= rip_element(resource, :description)
 %p= resource.occurs_at
-%p
-  = surround '[', ']' do
-    = delete_link resource
