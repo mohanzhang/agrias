@@ -1,6 +1,11 @@
 %h2
-  Aspect:
+  Aspect
+%p
+  Name:
   != rip_element(resource, :name)
+%p
+  Weight:
+  = resource.weight
 %p
   - if resource.parent
     Parent:

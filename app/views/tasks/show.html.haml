@@ -6,6 +6,7 @@
   = (resource.due_on - Date.today).to_i
   days on
   = resource.due_on
+%p
   - case resource.importance
     - when 1
       Not important
