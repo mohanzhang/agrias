@@ -2,16 +2,16 @@ commandMap =
   "echo (.+)": ["POST", "/echo"]
   "logout": ["REDIRECT", "/users/sign_out"]
 
-  "buf$": ["GET", "/buffer_items"]
-  "aspects$": ["GET", "/aspects"]
-  "appts": ["GET", "/appointments"]
+  "(list|buf)$": ["GET", "/buffer_items"]
+  "(asp|aspects)$": ["GET", "/aspects"]
+  "appts$": ["GET", "/appointments"]
 
   "buf (.+)": ["POST", "/buffer_items"]
-  "mk aspect (.+)": ["POST", "/aspects"]
-  "mk task (.+)": ["POST", "/tasks"]
-  "mk appt (.+)": ["POST", "/appointments"]
+  "(make|mk) aspect (.+)": ["POST", "/aspects"]
+  "(make|mk) task (.+)": ["POST", "/tasks"]
+  "(make|mk) appt (.+)": ["POST", "/appointments"]
 
-  "next":["GET", "/visualization/priority"]
+  "next$":["GET", "/visualization/priority"]
 
 writeLine = (outputObject, afterWriteTriggers) =>
   line = new OutputLine(outputLineId, afterWriteTriggers)
@@ -24,6 +24,9 @@ outputLineId = 0 # TODO attach this to the #output dom element
 outputLines = {}
 
 $ () =>
+  # Say hello
+  $.post("/echo", {args: "Welcome"}, ((data) => writeLine(new ResultBubble(data))), "html")
+
   # Process input and clear the command bar
   $("#inputBar form").bind 'submit', (e) =>
     e.preventDefault()
@@ -71,4 +74,5 @@ $ () =>
 
   # Scroll to bottom of page for all ajax requests
   $(document).ajaxComplete () =>
-    $("html body").animate({scrollTop: $(document).height()}, "slow")
+   $("html body").animate({scrollTop: $(document).height()}, "slow")
+  

@@ -3,6 +3,8 @@ class AppointmentsController < InheritedResources::Base
 
   respond_to :html, :json
 
+  layout false
+
   def show
     show! do |format|
       format.json { render :json => @appointment }
