@@ -58,7 +58,10 @@ $ () =>
             ((id, object) => 
               object.find("a[data-output-mode=extend]").click (e) =>
                 e.preventDefault()
-                $.get(e.target, null, ((data) => outputLines[id].extend(data)), "html"))
+                $.get(e.target, null, ((data) => outputLines[id].extend(data)), "html")),
+            ((id, object) =>
+              object.find("a[data-output-mode=hide]").click (e) =>
+                $(e.target).closest(".bubble").hide())
             ])
 
         error: (data) => writeLine(new ErrorBubble(data.responseText))
