@@ -23,6 +23,9 @@ writeLine = (outputObject, afterWriteTriggers) =>
 outputLineId = 0 # TODO attach this to the #output dom element
 outputLines = {}
 
+commandHistory = []
+commandHistoryIndex = 0
+
 $ () =>
   # Say hello
   $.post("/echo", {args: "Welcome"}, ((data) => writeLine(new ResultBubble(data))), "html")
@@ -36,6 +39,9 @@ $ () =>
     if input is ""
       return false
     
+    commandHistory.push(input)
+    commandHistoryIndex = commandHistory.length
+
     writeLine(new CommandBubble(input))
 
     routes = []
@@ -78,4 +84,22 @@ $ () =>
   # Scroll to bottom of page for all ajax requests
   $(document).ajaxComplete () =>
    $("html body").animate({scrollTop: $(document).height()}, "slow")
+
+  # Pressing up and down traverses the command history
+  $("#command").focus () =>
+    $(document).keydown (e) =>
+      if e.keyCode is 38
+        commandHistoryIndex-- unless commandHistoryIndex is 0
+        $("#command").val(commandHistory[commandHistoryIndex])
+      else if e.keyCode is 40
+        if commandHistoryIndex is commandHistory.length
+          $("#command").val("")
+        else
+          commandHistoryIndex++
+          $("#command").val(commandHistory[commandHistoryIndex])
+
+  $("#command").blur () =>
+    $(document).unbind("keydown")
+    commandHistoryIndex = commandHistory.length
+
   
