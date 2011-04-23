@@ -12,4 +12,4 @@ Feature: Tasks
     When I enter the command "mk task 2 under pets due in 5 days i3"
     Then I should see a result with "Buy a dog first"
     And I should see a result with "Due in 5 days"
-    And I should see a result with "Critical"
+    And I should see a result with "Importance: 3"

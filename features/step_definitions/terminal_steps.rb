@@ -4,7 +4,14 @@ When /^I enter the command "([^"]*)"$/ do |command|
 end
 
 Then /^I should see a result with "([^"]*)"$/ do |result|
-  Then %{I should see "#{result}" within ".bubble.result"}
+  regexp = Regexp.new(result)
+  xpath = "(//div[contains(@class, 'result')])[last()]"
+
+  if page.respond_to? :should
+    page.should have_xpath(xpath, :text => regexp)
+  else
+    assert page.has_xpath(xpath, :text => regexp)
+  end
 end
 
 Then /^I should see an error with "([^"]*)"$/ do |error|
