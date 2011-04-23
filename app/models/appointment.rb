@@ -7,6 +7,9 @@ class Appointment < ActiveRecord::Base
 
   default_scope order("occurs_at ASC")
 
+  scope :unattended, where(:attended => false)
+  scope :attended, where(:attended => true)
+
   attr_accessor :args
 
   before_validation(:on => :create) do

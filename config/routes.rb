@@ -8,7 +8,9 @@ Agrias::Application.routes.draw do
   resources :buffer_items
   resources :aspects
   resources :tasks
-  resources :appointments
+  resources :appointments do
+    post :attended, :on => :member
+  end
 
   resource :visualization do
     get :priority

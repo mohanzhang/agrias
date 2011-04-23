@@ -17,6 +17,12 @@ class AppointmentsController < InheritedResources::Base
     end
   end
 
+  def attended
+    @appointment = begin_of_association_chain.appointments.find(params[:id])
+    @appointment.update_attribute(:attended, true)
+    redirect_to appointment_path(@appointment)
+  end
+
   protected
 
   def begin_of_association_chain

@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20110416194625) do
     t.text     "notes"
     t.datetime "occurs_at"
     t.boolean  "optional",    :default => false
+    t.boolean  "attended",    :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

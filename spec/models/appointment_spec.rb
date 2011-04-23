@@ -26,6 +26,22 @@ describe Appointment do
     as[2].should == a3
   end
 
+  it "has a scope for unattended appointments" do
+    a1 = Factory.create(:appointment, :attended => false)
+    a2 = Factory.create(:appointment, :attended => true)
+
+    Appointment.unattended.size.should == 1
+    Appointment.unattended.first.should == a1
+  end
+
+  it "has a scope for attended appointments" do
+    a1 = Factory.create(:appointment, :attended => false)
+    a2 = Factory.create(:appointment, :attended => true)
+
+    Appointment.attended.size.should == 1
+    Appointment.attended.first.should == a2
+  end
+
   describe "create using args" do
     before :each do
       @buffer_item = Factory.create(:buffer_item, :phrase => "walk the dog")

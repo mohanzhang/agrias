@@ -1,6 +1,13 @@
-%h2 Appointments
+%h2 Upcoming Appointments
 %ul
-  - @appointments.each do |appt|
+  - @appointments.unattended.each do |appt|
     %li
       = link_to appt.description, appointment_path(appt), :remote => true, "data-output-mode" => "extend"
       (#{appt.occurs_at})
+%h2 Recently Attended
+%ul
+  - @appointments.attended.limit(3).each do |appt|
+    %li
+      = link_to appt.description, appointment_path(appt), :remote => true, "data-output-mode" => "extend"
+      (#{appt.occurs_at})
+

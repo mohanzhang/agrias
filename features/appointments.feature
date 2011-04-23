@@ -16,3 +16,12 @@ Feature: Appointments
     Given an appointment exists with description: "Say hello", user: user "current user"
     When I enter the command "appts"
     Then I should see a result with "Say hello"
+
+  @javascript
+  Scenario: Attend an appointment
+    Given an appointment exists with description: "Say hello", user: user "current user"
+    When I enter the command "appts"
+    And I follow "Say hello"
+    And I follow "attended"
+    Then an appointment should exist with attended: true
+
