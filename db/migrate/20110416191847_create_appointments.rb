@@ -9,6 +9,8 @@ class CreateAppointments < ActiveRecord::Migration
       t.datetime :occurs_at
       t.boolean :optional, :default => false
 
+      t.boolean :attended, :default => false
+
       t.timestamps
     end
   end
