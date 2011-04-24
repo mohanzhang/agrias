@@ -1,0 +1,10 @@
+- resource = error_messages
+- if resource.errors.any?
+  .errorExplanation
+    %h2
+      There was a problem...
+    %ul
+      - resource.errors.full_messages.each do |msg|
+        %li= msg
+- else
+  .resourceErrors{:id => "#{resource.class}_post_errors"}

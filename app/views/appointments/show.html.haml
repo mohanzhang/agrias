@@ -1,0 +1,10 @@
+.actions
+  = surround '[', ']' do
+    = delete_link resource
+  - unless resource.attended?
+    = surround '[', ']' do
+      = link_to "attended", attended_appointment_path(resource), :remote => true, "data-method" => "post", "data-output-mode" => "hide"
+
+%h2 Appointment
+%p!= rip_element(resource, :description)
+%p= resource.occurs_at

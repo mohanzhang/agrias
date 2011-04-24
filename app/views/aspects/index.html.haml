@@ -1,0 +1,6 @@
+%h2 Aspects
+%table
+  %tr
+    - @aspects.each do |aspect|
+      %td
+        != aspect_tree(aspect)

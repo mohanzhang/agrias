@@ -1,0 +1,15 @@
+.actions
+  = surround '[', ']' do
+    = delete_link resource
+%h2
+  = resource.aspect.name
+%p
+  != rip_element(resource, :description)
+%p
+  Due in
+  = (resource.due_on - Date.today).to_i
+  days on
+  = resource.due_on
+%p
+  Importance:
+  != rip_element(resource, :importance)

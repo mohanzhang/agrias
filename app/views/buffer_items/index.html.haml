@@ -1,0 +1,5 @@
+%h2 Buffer
+%ol
+  - @buffer_items.each do |buffer_item|
+    %li
+      = link_to buffer_item.phrase, buffer_item_path(buffer_item), "data-output-mode" => "extend"

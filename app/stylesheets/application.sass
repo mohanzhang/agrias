@@ -1,0 +1,112 @@
+@import compass/reset
+@import compass/utilities
+@import compass/css3
+
+body
+  background: #444
+  font: 14px/1.5em "Monaco"
+  padding-bottom: 80px
+
+a
+  +link-colors(#245)
+  text-decoration: none
+  &:hover
+    text-decoration: underline
+
+.clear
+  clear: both
+
+.bubble
+  float: left
+  +border-radius(5px)
+  +box-shadow(#000, 3px)
+  border: 1px solid #000
+  background: url("/images/speech_bubble_bg.png")
+  padding: 5px
+  margin: 15px
+
+  &.extension
+    margin-left: 50px
+    .content
+      min-width: 125px
+    .pointer
+      float: left
+      margin-left: -50px
+
+    form
+      input[type="text"]
+        padding: 2px
+        font-size: 118%
+        width: 300px
+
+  &.dialog
+    float: none
+    width: 400px
+    margin: 40px auto
+    padding: 20px
+
+    form
+      width: 100%
+      input[type="email"], input[type="password"]
+        width: 96%
+        border: 1px solid #888
+        padding: 2%
+        font-size: 162%
+      .option
+        clear: right
+        margin-top: 10px
+        float: right
+    .formLinks
+      margin-top: 20px
+
+  .avatar
+    margin: 0 5px
+    &.left
+      float: left
+      padding-right: 5px
+    &.right
+      float: right
+      padding-left: 5px
+
+  .actions
+    float: right
+
+  .content
+    float: left
+    padding: 0 5px
+    h2
+      border-bottom: 1px dashed #888
+      color: #444
+      margin-bottom: 5px
+    h3
+      display: inline
+      &.name
+        display: block
+        margin-left: -2px
+    ul
+      padding: 10px
+      padding-bottom: 5px
+    ol
+      list-style: decimal
+      padding: 0 30px
+
+    table
+      td
+        vertical-align: top
+
+#inputBar
+  background: #a49d83
+  position: fixed
+  width: 100%
+  bottom: 0
+  padding: 1%
+  border-top: 1px solid #888
+
+  form
+    input[type="text"]
+      width: 96%
+      font-size: 16px
+      padding: 1%
+      border: 1px solid #888
+    #test_submit
+      display: none

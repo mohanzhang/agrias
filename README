@@ -1,0 +1,152 @@
+== What is this?
+
+Agrias is my custom solution to organization. When I originally outgrew the
+basic to-do list, I wrote AccomplishBoard (http://www.accomplishboard.com),
+but it seems now that I've outgrown that as well. I've learned a lot about the
+way I work and stay motivated over the past couple of years since I left school.
+Things are different when there is no GPA at stake, and I caught myself becoming
+less and less productive over time as I slowly lost the "student feeling."
+
+I am open-sourcing this project as I can't really imagine a situation in which
+hordes of other people suddenly want to track their lives in the same way that
+I do. In fact, I am not sure how you found this page...
+
+== Why "Agrias"?
+
+I thought long and hard about what I wanted to call this app, but ultimately I
+realized (again) that no one will actually see this (except you, apparently), so
+it doesn't really matter what I call it. With that said, after spending a few
+hours on Wikipedia looking for an appropriate goddess to name my app after (I
+was going for some kind of protective/wisdom/knowledge deity), and coming up
+short, I went back to my roots. I thought about all the fantasy worlds that I've
+enjoyed over the years, from LOTR to Harry Potter to Bröderna Lejonhjärta, and
+decided that something from the Final Fantasy series would be appropriate. My
+favorite game is indeed Final Fantasy Tactics, and Agrias is a wonderful
+character from that game. Indeed, I would often think how much easier life was
+with Agrias on my squad (assuming Orlandu is considered cheating). Also, if you
+read about her story, you'll also realize what a stand-up gal she is. If I could
+stasis sword some of my tasks and get them to stop, I would do better in life.
+
+== Conceptually, how does this work?
+
+There are few different concepts that make up Agrias; they are:
+
+= Buffer
+The buffer is the place where you drop all your quick thoughts. It's like task
+purgatory. At any time, you can process the buffer, which means sorting phrases
+into their rightful types, and giving them some metrics, etc.
+
+= Aspect
+Aspects are tree-like structures that help you define the areas in your life
+that you want to focus on, or that tasks tend to fall in. You can assign relative
+importances to various aspects, which affects the way the tasks show up in
+priority view. Aspects are ultimately task containers.
+
+= Idea
+Sometimes you have an idea that you want to develop later; just dump this idea in
+the buffer, and sort it as an idea later on. You can attach resources and notes
+to ideas to develop them further later on.
+
+= Muse
+A muse is a baby aspect in that it represents a small interest that you currently
+have. You can associate resources and tasks with muses, and if you think it
+becomes big enough, you can make it an aspect.
+
+= Goal
+You can tell Agrias about long-term goals, and Agrias will remind you daily to
+take action on them. If it detects that you've been ignoring your goals for a
+while, it will force you to address the goal first before you can do other stuff.
+You must explicitly say that you've done nothing during this time, or do something
+and record it.
+
+= Appointment
+Appointments represent a future commitment. Agrias will send reminders as the date
+nears. If you miss an appointment, Agrias will use Holy Explosion on your sorry
+ass, so don't miss appointments.
+
+= Task and subtask
+The basic to-do entities. Tasks require you to assign an importance and a due date.
+Agrias will then automatically prioritize these for you through smart views.
+Subtasks are like phrases, and are lightweight todos that ultimately help you complete
+a task.
+
+= Visualizations
+This is where the rubber meets the road. All the different entities are really just
+there to help you distinguish between the different types of obligations in life.
+You buffer quickly so that you can capture your stream of consciousness, then later
+you go in and sort everything (this is essentially the precursor to "making a plan").
+The cool part is that Agrias will apply a few algorithms and let you visualize your
+to-do list along different axes, among which are:
+
+* Priority. Agrias will calculate what the priority is. Priority is a measure of
+  urgency and importance, balanced by the importance of the aspect that the task
+  falls under. Basically, if you follow the priority list, you will end up doing
+  important things that are urgent, and not do any of the unimportant stuff. This
+  is a good default.
+
+* Board. This is a throw-over from AccomplishBoard. See your tasks laid out on a
+  board to get a feel for how backlogged you are. It's also good to visually take
+  in how your aspects are balancing against each other.
+
+* Neglect. This is an experimental measure that shows you which aspects of your life
+  have been neglected recently (so that you might want to temporarily increase
+  the priority of those tasks).
+
+== I don't want to install your app, so can you just explain what the usage is like?
+
+Sure. Agrias is a Rails backend with a javascript command-line interface
+simulated in your browser. There is no support for multiple users, although
+because I use Devise, you can easily extend it to do so. After you login as
+yourself, you can type some commands. To exit, just close your browser (duh).
+The available commands are:
+
+  buf <phrase>
+  - Add a phrase to the buffer
+
+  process
+  - Go into process mode and put buffer items into their rightful types
+
+    make (idea|muse|task|appointment|goal|aspect) <json object>
+    - Turn a buffer item into the given type. Pass the object properties as json.
+
+  see (next|board|neglect)
+  - Get a visualization of tasks
+
+  aspects
+  - Go into aspect management mode
+
+  muses
+  - Go into muse management mode
+
+  ideas
+  - Go into idea management mode
+
+  tasks
+  - Go into task management mode
+
+Inside management mode, you have basic CRUD capabilities.
+
+== Notes
+
+This software is made available under the MIT License, as follows:
+
+Copyright (C) 2011 by Mohan Zhang
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+

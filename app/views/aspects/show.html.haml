@@ -1,0 +1,18 @@
+.actions
+  = surround '[', ']' do
+    = delete_link resource
+
+%h2
+  Aspect
+%p
+  Name:
+  != rip_element(resource, :name)
+%p
+  Weight:
+  != rip_element(resource, :weight)
+%p
+  - if resource.parent
+    Parent:
+    = resource.parent.name
+  - else
+    Root
