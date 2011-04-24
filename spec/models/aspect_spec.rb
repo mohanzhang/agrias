@@ -73,11 +73,12 @@ describe Aspect do
 
   describe "create using args" do
     before :each do
-      @aspect = Factory.create(:aspect, :name => "Work and stuff")
+      @user = Factory.create(:user)
+      @aspect = Factory.create(:aspect, :user => @user, :name => "Work and stuff")
     end
 
     it "can be created underneath a parent" do
-      aspect = Factory.create(:aspect, :args => "aspect test 3 under work")
+      aspect = Factory.create(:aspect, :user_id => @user.id, :args => "aspect test 3 under work")
       aspect.parent.should == @aspect
       
       Factory.build(:aspect, :args => "aspect test under work 3").should_not be_valid
@@ -91,6 +92,16 @@ describe Aspect do
     it "should be created with a weight" do
       aspect = Factory.create(:aspect, :args => "aspect Hello 3 as root")
       aspect.weight.should == 3
+    end
+
+    it "can't be created under another user's aspect" do
+      u1 = Factory.create(:user)
+      u2 = Factory.create(:user)
+
+      a1 = Factory.create(:aspect, :user => u1, :name => "Blah blah")
+      a2 = Factory.create(:aspect, :user => u2, :name => "Test test")
+
+      Factory.build(:aspect, :args => "aspect Hello 2 under test").should_not be_valid
     end
   end
 end

@@ -67,5 +67,14 @@ describe Task do
       task = Factory.create(:task, :args => "task 1 under work due 4/12/11 i3", :user_id => @user.id)
       task.importance.should == 3
     end
+
+    it "can't be created under another user's aspect" do
+      u2 = Factory.create(:user)
+
+      a1 = Factory.create(:aspect, :user => @user, :name => "Blah blah")
+      a2 = Factory.create(:aspect, :user => u2, :name => "Test")
+
+      Factory.build(:task, :args => "task 1 under test due 4/12/11 i3", :user_id => @user.id).should_not be_valid
+    end
   end
 end

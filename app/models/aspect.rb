@@ -30,12 +30,13 @@ class Aspect < ActiveRecord::Base
   private
 
   def process_args!
+    current_user = User.find(self.user_id)
     if self.args.match(/aspect (.+) (\d) under (.+)/)
       name = $1
       weight = $2.to_i
       parent_clue = $3
 
-      parents = Aspect.with_clue(parent_clue)
+      parents = current_user.aspects.with_clue(parent_clue)
 
       if parents.size > 1
         self.errors.add(:args, "specified an ambiguous parent")
