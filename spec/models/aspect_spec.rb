@@ -12,9 +12,13 @@ describe Aspect do
     assert_presence(:aspect, :name)
   end
 
-  it "requires a unique name" do
-    Factory.create(:aspect, :name => "asdf")
-    Factory.build(:aspect, :name => "asdf").should_not be_valid
+  it "requires a unique name wrt to the user" do
+    u1 = Factory.create(:user)
+    u2 = Factory.create(:user)
+    Factory.create(:aspect, :user => u1, :name => "asdf")
+    Factory.build(:aspect, :user => u1, :name => "asdf").should_not be_valid
+
+    Factory.build(:aspect, :user => u2, :name => "asdf").should be_valid
   end
 
   it "requires a weight between 1 and 3 inclusive" do

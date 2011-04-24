@@ -2,7 +2,7 @@ class Aspect < ActiveRecord::Base
   belongs_to :user
   validates :user_id, :presence => true
 
-  validates :name, :presence => true, :uniqueness => true
+  validates :name, :presence => true, :uniqueness => {:scope => :user_id}
   validates :weight, :presence => true, :inclusion => {:in => 1..3}
 
   has_ancestry
