@@ -46,8 +46,4 @@ Agrias::Application.configure do
 
   # Send deprecation notices to registered listeners
   config.active_support.deprecation = :notify
-
-  # Hack to make compass work on heroku: always compile to tmp directory and redirect with rack
-  FileUtils.mkdir_p(Rails.root + "tmp/public/stylesheets")
-  config.middleware.insert_before 'Rack::Sendfile', 'Rack::Static', :root => "#{Rails.root}/tmp/public", :urls => ["/stylesheets"]
 end
