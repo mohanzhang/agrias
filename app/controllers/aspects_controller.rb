@@ -6,7 +6,7 @@ class AspectsController < InheritedResources::Base
   layout false
 
   def index
-    @aspects = Aspect.roots
+    @aspects = Aspect.roots.order("weight DESC")
   end
 
   def show
