@@ -39,6 +39,7 @@ Factory.define :task do |x|
   x.description Faker::Lorem.words(5)
   x.due_on 10.days.from_now.to_date
   x.importance 2
+  x.accomplished false
 end
 
 Factory.define :subtask do |x|

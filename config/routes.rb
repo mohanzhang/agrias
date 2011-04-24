@@ -7,7 +7,11 @@ Agrias::Application.routes.draw do
   
   resources :buffer_items
   resources :aspects
-  resources :tasks
+  
+  resources :tasks do
+    post :completed, :on => :member
+  end
+
   resources :appointments do
     post :attended, :on => :member
   end

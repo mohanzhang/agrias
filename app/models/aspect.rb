@@ -17,11 +17,11 @@ class Aspect < ActiveRecord::Base
 
   # an aspect's tasks is its tasks in priority order and then the tasks of
   # its children by weight
-  def tasks
-    ret = Task.where(:aspect_id => self.id).order("importance DESC").all
+  def tasks(options={})
+    ret = Task.where(options.merge(:aspect_id => self.id)).order("importance DESC").all
     if self.has_children?
       self.children.order("weight DESC").each do |aspect|
-        ret << aspect.tasks
+        ret << aspect.tasks(options)
       end
     end
     return ret.flatten
