@@ -18,11 +18,20 @@ class User < ActiveRecord::Base
   # The most important task always belongs to the most important aspect
   # We delegate the hard to work to the aspect itself to figure out the priority of
   # the tasks it contains (its entire subtree of tasks)
-  def tasks(limit=5)
+  def tasks(options={})
+    limit = 
+      if options.has_key?(:limit)
+        n = options[:limit]
+        options.delete(:limit)
+        n
+      else
+        5
+      end
+
     ret = []
     self.aspects.each do |aspect|
       next unless aspect.is_root?
-      ret << aspect.tasks
+      ret << aspect.tasks(options)
       ret.flatten!
       break if ret.size >= limit
     end

@@ -2,11 +2,13 @@ class Aspect < ActiveRecord::Base
   belongs_to :user
   validates :user_id, :presence => true
 
-  validates :name, :presence => true, :uniqueness => true
+  validates :name, :presence => true, :uniqueness => {:scope => :user_id}
   validates :weight, :presence => true, :inclusion => {:in => 1..3}
 
   has_ancestry
   
+  scope :with_clue, lambda {|clue| where("upper(name) like ?", clue.upcase + "%")}
+
   attr_accessor :args
 
   before_validation(:on => :create) do
@@ -15,11 +17,11 @@ class Aspect < ActiveRecord::Base
 
   # an aspect's tasks is its tasks in priority order and then the tasks of
   # its children by weight
-  def tasks
-    ret = Task.where(:aspect_id => self.id).order("importance DESC").all
+  def tasks(options={})
+    ret = Task.where(options.merge(:aspect_id => self.id)).order("importance DESC").all
     if self.has_children?
       self.children.order("weight DESC").each do |aspect|
-        ret << aspect.tasks
+        ret << aspect.tasks(options)
       end
     end
     return ret.flatten
@@ -28,13 +30,14 @@ class Aspect < ActiveRecord::Base
   private
 
   def process_args!
+    current_user = User.find(self.user_id)
     if self.args.match(/aspect (.+) (\d) under (.+)/)
       name = $1
       weight = $2.to_i
       parent_clue = $3
 
-      parents = Aspect.where("name like ?", parent_clue + "%")
-      
+      parents = current_user.aspects.with_clue(parent_clue)
+
       if parents.size > 1
         self.errors.add(:args, "specified an ambiguous parent")
       elsif parents.size == 0

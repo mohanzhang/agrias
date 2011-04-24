@@ -12,9 +12,13 @@ describe Aspect do
     assert_presence(:aspect, :name)
   end
 
-  it "requires a unique name" do
-    Factory.create(:aspect, :name => "asdf")
-    Factory.build(:aspect, :name => "asdf").should_not be_valid
+  it "requires a unique name wrt to the user" do
+    u1 = Factory.create(:user)
+    u2 = Factory.create(:user)
+    Factory.create(:aspect, :user => u1, :name => "asdf")
+    Factory.build(:aspect, :user => u1, :name => "asdf").should_not be_valid
+
+    Factory.build(:aspect, :user => u2, :name => "asdf").should be_valid
   end
 
   it "requires a weight between 1 and 3 inclusive" do
@@ -30,9 +34,25 @@ describe Aspect do
     parent.children.count.should == 1
   end
 
+  it "can find aspects by clue" do
+    a = Factory.create(:aspect, :name => "Test and stuff")
+    Aspect.with_clue("test").first.should == a
+  end
+
   describe "tasks" do
     it "can have many tasks" do
       assert_has_many(:aspect, :tasks)
+    end
+    
+    it "can return tasks that are accomplished" do
+      a1 = Factory.create(:aspect)
+      a1t1 = Factory.create(:task, :aspect => a1, :importance => 1, :accomplished => false)
+      a1t2 = Factory.create(:task, :aspect => a1, :importance => 3, :accomplished => true)
+      a11 = Factory.create(:aspect, :parent => a1)
+      a2t1 = Factory.create(:task, :aspect => a11, :importance => 3, :accomplished => true)
+
+      a1.tasks(:accomplished => false).size.should == 1
+      a1.tasks(:accomplished => true).size.should == 2
     end
 
     it "returns the regular set of tasks in importance DESC if the aspect is a leaf" do
@@ -64,11 +84,12 @@ describe Aspect do
 
   describe "create using args" do
     before :each do
-      @aspect = Factory.create(:aspect, :name => "Work and stuff")
+      @user = Factory.create(:user)
+      @aspect = Factory.create(:aspect, :user => @user, :name => "Work and stuff")
     end
 
     it "can be created underneath a parent" do
-      aspect = Factory.create(:aspect, :args => "aspect test 3 under work")
+      aspect = Factory.create(:aspect, :user_id => @user.id, :args => "aspect test 3 under work")
       aspect.parent.should == @aspect
       
       Factory.build(:aspect, :args => "aspect test under work 3").should_not be_valid
@@ -82,6 +103,16 @@ describe Aspect do
     it "should be created with a weight" do
       aspect = Factory.create(:aspect, :args => "aspect Hello 3 as root")
       aspect.weight.should == 3
+    end
+
+    it "can't be created under another user's aspect" do
+      u1 = Factory.create(:user)
+      u2 = Factory.create(:user)
+
+      a1 = Factory.create(:aspect, :user => u1, :name => "Blah blah")
+      a2 = Factory.create(:aspect, :user => u2, :name => "Test test")
+
+      Factory.build(:aspect, :args => "aspect Hello 2 under test").should_not be_valid
     end
   end
 end

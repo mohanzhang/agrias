@@ -14,4 +14,12 @@ class TasksController < InheritedResources::Base
       format.json { render :nothing => true }
     end
   end
+
+  def completed
+    @task = Task.find(params[:id])
+    raise "User does not own task" unless @task.aspect.user_id == current_user.id
+
+    @task.update_attribute(:accomplished, true)
+    redirect_to task_path(@task)
+  end
 end
