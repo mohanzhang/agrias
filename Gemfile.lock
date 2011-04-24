@@ -196,6 +196,7 @@ GEM
       sinatra (~> 1.0.0)
       sqlite3-ruby (~> 1.2)
     term-ansicolor (1.0.5)
+    therubyracer-heroku (0.8.1.pre3)
     thor (0.14.6)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
@@ -233,3 +234,4 @@ DEPENDENCIES
   ruby_parser
   sqlite3-ruby
   taps (>= 0.3.0)
+  therubyracer-heroku (= 0.8.1.pre3)
