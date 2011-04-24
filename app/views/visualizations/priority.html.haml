@@ -1,6 +1,16 @@
-%h2 Priority View
+%h2 Buffer
 %ol
-  - @tasks.each do |task|
+  - @buffer_items.each do |buffer_item|
     %li
-      = link_to task.description, task_path(task), :remote => true, "data-output-mode" => "extend"
+      = link_to buffer_item.phrase, buffer_item_path(buffer_item), :remote => true, "data-output-mode" => "extend"
+
+- if @buffer_items.size <= 5
+  %h2 Priority View
+  %ol
+    - @tasks.each do |task|
+      %li
+        = link_to task.description, task_path(task), :remote => true, "data-output-mode" => "extend"
+- else
+  %p
+    Buffer has more than 5 items. Process the buffer first.
 
