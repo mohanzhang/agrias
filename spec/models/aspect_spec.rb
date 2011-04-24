@@ -30,6 +30,11 @@ describe Aspect do
     parent.children.count.should == 1
   end
 
+  it "can find aspects by clue" do
+    a = Factory.create(:aspect, :name => "Test and stuff")
+    Aspect.with_clue("test").first.should == a
+  end
+
   describe "tasks" do
     it "can have many tasks" do
       assert_has_many(:aspect, :tasks)

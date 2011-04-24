@@ -32,7 +32,7 @@ class Task < ActiveRecord::Base
       due_string = match[3]
       importance = match[4].to_i
 
-      self.aspect = (a = current_user.aspects.where("name like ?", aspect_clue + "%")) ? a.first : a
+      self.aspect = (a = current_user.aspects.with_clue(aspect_clue)) ? a.first : a
       self.description = current_user.buffer_items.all[buffer_item_index.to_i - 1].phrase
       self.importance = importance
       if (time = Chronic.parse(due_string))

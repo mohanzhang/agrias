@@ -7,6 +7,8 @@ class Aspect < ActiveRecord::Base
 
   has_ancestry
   
+  scope :with_clue, lambda {|clue| where("upper(name) like ?", clue.upcase + "%")}
+
   attr_accessor :args
 
   before_validation(:on => :create) do
@@ -33,8 +35,8 @@ class Aspect < ActiveRecord::Base
       weight = $2.to_i
       parent_clue = $3
 
-      parents = Aspect.where("name like ?", parent_clue + "%")
-      
+      parents = Aspect.with_clue(parent_clue)
+
       if parents.size > 1
         self.errors.add(:args, "specified an ambiguous parent")
       elsif parents.size == 0
