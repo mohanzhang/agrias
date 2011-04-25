@@ -74,12 +74,12 @@ describe User do
     it "can filter by task state" do
       user = Factory.create(:user)
       a1 = Factory.create(:aspect, :user => user, :weight => 3)
-      a1t1 = Factory.create(:task, :aspect => a1, :accomplished => false)
-      a1t2 = Factory.create(:task, :aspect => a1, :accomplished => false)
-      a1t3 = Factory.create(:task, :aspect => a1, :accomplished => true)
+      a1t1 = Factory.create(:task, :aspect => a1, :state => Task::NOT_STARTED)
+      a1t2 = Factory.create(:task, :aspect => a1, :state => Task::NOT_STARTED)
+      a1t3 = Factory.create(:task, :aspect => a1, :state => Task::ACCOMPLISHED)
 
-      user.tasks(:accomplished => false).size.should == 2
-      user.tasks(:accomplished => true).size.should == 1
+      user.tasks(:state => Task::NOT_STARTED).size.should == 2
+      user.tasks(:state => Task::ACCOMPLISHED).size.should == 1
       user.tasks().size.should == 3
     end
   end

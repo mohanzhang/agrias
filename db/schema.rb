@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110416194625) do
+ActiveRecord::Schema.define(:version => 20110425001939) do
 
   create_table "appointments", :force => true do |t|
     t.integer  "user_id"
@@ -79,9 +79,9 @@ ActiveRecord::Schema.define(:version => 20110416194625) do
     t.text     "notes"
     t.date     "due_on"
     t.integer  "importance"
-    t.boolean  "accomplished"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "state",       :default => 0, :null => false
   end
 
   create_table "users", :force => true do |t|

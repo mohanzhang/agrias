@@ -6,6 +6,7 @@ class Task < ActiveRecord::Base
   validates :description, :presence => true
   validates :due_on, :presence => true
   validates :importance, :presence => true, :inclusion => {:in => 1..3}
+  validates :state, :presence => true, :inclusion => {:in => 1..4}
 
   attr_accessor :args, :user_id
 
@@ -16,6 +17,28 @@ class Task < ActiveRecord::Base
   after_save(:on => :create) do
     origin = BufferItem.find_by_phrase(self.description)
     origin.destroy if origin
+  end
+
+  UNDEFINED = 0
+  NOT_STARTED = 1
+  IN_PROGRESS = 2
+  WAITING = 3
+  ACCOMPLISHED = 4
+
+  def not_started?
+    return self.state == NOT_STARTED
+  end
+
+  def in_progress?
+    return self.state == IN_PROGRESS
+  end
+
+  def waiting?
+    return self.state == WAITING
+  end
+
+  def accomplished?
+    return self.state == ACCOMPLISHED
   end
 
   def weight
@@ -35,6 +58,7 @@ class Task < ActiveRecord::Base
       self.aspect = (a = current_user.aspects.with_clue(aspect_clue)) ? a.first : a
       self.description = current_user.buffer_items.all[buffer_item_index.to_i - 1].phrase
       self.importance = importance
+      self.state = NOT_STARTED
       if (time = Chronic.parse(due_string))
         self.due_on = time.to_date
       else

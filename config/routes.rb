@@ -9,7 +9,10 @@ Agrias::Application.routes.draw do
   resources :aspects
   
   resources :tasks do
-    post :completed, :on => :member
+    post :reset, :on => :member
+    post :start, :on => :member
+    post :wait, :on => :member
+    post :complete, :on => :member
   end
 
   resources :appointments do
