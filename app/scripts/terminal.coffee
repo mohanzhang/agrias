@@ -1,18 +1,28 @@
-commandMap =
-  "echo (.+)": ["POST", "/echo"]
-  "logout": ["REDIRECT", "/users/sign_out"]
+commandMap = (() =>
+    map = 
+      "echo (.+)": ["POST", "/echo"]
+      "logout": ["REDIRECT", "/users/sign_out"]
 
-  "(list|buf)$": ["GET", "/buffer_items"]
-  "(asp|aspects)$": ["GET", "/aspects"]
-  "appts$": ["GET", "/appointments"]
-  "tasks$": ["GET", "/tasks"]
+      "(list|buf)": ["GET", "/buffer_items"]
+      "(asp|aspects)": ["GET", "/aspects"]
+      "appts": ["GET", "/appointments"]
+      "tasks": ["GET", "/tasks"]
 
-  "buf (.+)": ["POST", "/buffer_items"]
-  "(make|mk) aspect (.+)": ["POST", "/aspects"]
-  "(make|mk) task (.+)": ["POST", "/tasks"]
-  "(make|mk) appt (.+)": ["POST", "/appointments"]
+      "buf (.+)": ["POST", "/buffer_items"]
+      "(make|mk) aspect (.+)": ["POST", "/aspects"]
+      "(make|mk) task (.+)": ["POST", "/tasks"]
+      "(make|mk) appt (.+)": ["POST", "/appointments"]
 
-  "next$":["GET", "/visualization/priority"]
+      "next":["GET", "/visualization/priority"]
+    
+    ret = {}
+
+    for k,v of map
+      ret["^"+k+"$"] = v
+    
+    return ret
+  )()
+
 
 writeLine = (outputObject, afterWriteTriggers) =>
   line = new OutputLine(outputLineId, afterWriteTriggers)
