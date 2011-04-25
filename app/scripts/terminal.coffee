@@ -5,6 +5,7 @@ commandMap =
   "(list|buf)$": ["GET", "/buffer_items"]
   "(asp|aspects)$": ["GET", "/aspects"]
   "appts$": ["GET", "/appointments"]
+  "tasks$": ["GET", "/tasks"]
 
   "buf (.+)": ["POST", "/buffer_items"]
   "(make|mk) aspect (.+)": ["POST", "/aspects"]

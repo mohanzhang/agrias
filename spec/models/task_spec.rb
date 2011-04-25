@@ -40,6 +40,40 @@ describe Task do
     a12t1.weight.should == [3,1]
   end
 
+  describe "task state" do
+    it "must have a state" do
+      assert_presence(:task, :state)
+    end
+
+    it "can be not started" do
+      t = Factory.create(:task, :state => Task::NOT_STARTED)
+      t.state.should == Task::NOT_STARTED
+      t.not_started?.should be_true
+    end
+
+    it "can be in progress" do
+      t = Factory.create(:task, :state => Task::IN_PROGRESS)
+      t.state.should == Task::IN_PROGRESS
+      t.in_progress?.should be_true
+    end
+
+    it "can be waiting for resolution" do
+      t = Factory.create(:task, :state => Task::WAITING)
+      t.state.should == Task::WAITING
+      t.waiting?.should be_true
+    end
+
+    it "can be accomplished" do
+      t = Factory.create(:task, :state => Task::ACCOMPLISHED)
+      t.state.should == Task::ACCOMPLISHED
+      t.accomplished?.should be_true
+    end
+
+    it "must be a known state" do
+      assert_range(:task, :state, 1..4)
+    end
+  end
+
   describe "create using args" do
     before :each do
       @user = Factory.create(:user)

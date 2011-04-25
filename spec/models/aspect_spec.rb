@@ -46,13 +46,13 @@ describe Aspect do
     
     it "can return tasks that are accomplished" do
       a1 = Factory.create(:aspect)
-      a1t1 = Factory.create(:task, :aspect => a1, :importance => 1, :accomplished => false)
-      a1t2 = Factory.create(:task, :aspect => a1, :importance => 3, :accomplished => true)
+      a1t1 = Factory.create(:task, :aspect => a1, :importance => 1, :state => Task::NOT_STARTED)
+      a1t2 = Factory.create(:task, :aspect => a1, :importance => 3, :state => Task::ACCOMPLISHED)
       a11 = Factory.create(:aspect, :parent => a1)
-      a2t1 = Factory.create(:task, :aspect => a11, :importance => 3, :accomplished => true)
+      a2t1 = Factory.create(:task, :aspect => a11, :importance => 3, :state => Task::ACCOMPLISHED)
 
-      a1.tasks(:accomplished => false).size.should == 1
-      a1.tasks(:accomplished => true).size.should == 2
+      a1.tasks(:state => Task::NOT_STARTED).size.should == 1
+      a1.tasks(:state => Task::ACCOMPLISHED).size.should == 2
     end
 
     it "returns the regular set of tasks in importance DESC if the aspect is a leaf" do

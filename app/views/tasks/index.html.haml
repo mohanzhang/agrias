@@ -1,0 +1,12 @@
+%h2 Tasks Waiting for Resolution
+%ol
+  - current_user.tasks(:state => Task::WAITING).each do |task|
+    %li= extend_task_link(task)
+%h2 Tasks In Progress
+%ol
+  - current_user.tasks(:state => Task::IN_PROGRESS).each do |task|
+    %li= extend_task_link(task)
+%h2 Tasks Not Started
+%ol
+  - current_user.tasks(:state => Task::NOT_STARTED, :limit => 5).each do |task|
+    %li= extend_task_link(task)
