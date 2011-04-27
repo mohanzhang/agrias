@@ -14,6 +14,7 @@ commandMap = (() =>
       "(make|mk) appt (.+)": ["POST", "/appointments"]
 
       "next":["GET", "/visualization/priority"]
+      "table":["GET", "/visualization/table"]
     
     ret = {}
 

@@ -1,0 +1,12 @@
+%h2 Table View
+%table
+  %tr
+    - @aspects.each do |aspect|
+      %th
+        = extend_link aspect, :name
+  %tr
+    - @aspects.each do |aspect|
+      %td
+        %ul
+          - aspect.tasks.each do |task|
+            %li= extend_link task, :description

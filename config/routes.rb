@@ -21,5 +21,6 @@ Agrias::Application.routes.draw do
 
   resource :visualization do
     get :priority
+    get :table
   end
 end
