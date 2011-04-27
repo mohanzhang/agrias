@@ -13,6 +13,10 @@
 %p
   Importance:
   != rip_element(resource, :importance)
+
+%h2 Notes
+!= (rip_element(resource, :notes, "textarea"))
+
 .actions
   - unless resource.not_started?
     = surround '[', ']' do
@@ -26,4 +30,5 @@
   - unless resource.accomplished?
     = surround '[', ']' do
       = link_to "complete", complete_task_path(resource), :remote => true, "data-method" => "post", "data-output-mode" => "hide"
+
 
