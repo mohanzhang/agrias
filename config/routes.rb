@@ -14,6 +14,7 @@ Agrias::Application.routes.draw do
   end
   
   resources :tasks do
+    post :args, :on => :collection
     post :reset, :on => :member
     post :start, :on => :member
     post :wait, :on => :member
