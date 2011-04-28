@@ -11,4 +11,8 @@ class ApplicationController < ActionController::Base
       }
     end
   end
+
+  def augment_args
+    params[:user_id] = user_signed_in? ? current_user.id : nil
+  end
 end

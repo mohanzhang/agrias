@@ -9,9 +9,11 @@ commandMap = (() =>
       "tasks": ["GET", "/tasks"]
 
       "buf (.+)": ["POST", "/buffer_items"]
-      "(make|mk) aspect (.+)": ["POST", "/aspects"]
+      "(make|mk) aspect (.+)": ["POST", "/aspects/args"]
       "(make|mk) task (.+)": ["POST", "/tasks"]
       "(make|mk) appt (.+)": ["POST", "/appointments"]
+
+      "(move|mv) aspect (.+)": ["POST", "/aspects/process"]
 
       "next":["GET", "/visualization/priority"]
       "table":["GET", "/visualization/table"]
@@ -69,7 +71,7 @@ $ () =>
         type: routes[0][0],
         url: routes[0][1],
         data:
-          args: input.substring(input.indexOf(' '), input.length),
+          args: input
         success: (data) =>
           writeLine(new ResultBubble(data), [
             ((id, object) => object.find(".rest_in_place").rest_in_place()),

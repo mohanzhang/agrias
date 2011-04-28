@@ -1,5 +1,5 @@
 class AspectsController < InheritedResources::Base
-  before_filter :pass_args, :only => [:create]
+  before_filter :augment_args
 
   respond_to :html, :json
 
@@ -18,6 +18,21 @@ class AspectsController < InheritedResources::Base
   def update
     update! do |format|
       format.json { render :nothing => true }
+    end
+  end
+
+  def args
+    begin
+    aspect = Aspect.process!(params)
+    if aspect.save
+      redirect_to aspect_path(aspect)
+    elsif aspect.new_record?
+      render :action => :new
+    else
+      render :action => :edit
+    end
+    rescue ArgDriven::UnrecognizedArgsError => e
+      redirect_to :controller => :terminal, :action => :echo, :args => e.message
     end
   end
 
