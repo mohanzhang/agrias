@@ -42,20 +42,31 @@ describe Appointment do
     Appointment.attended.first.should == a2
   end
 
-  describe "create using args" do
+  describe "arg driven" do
     before :each do
-      @buffer_item = Factory.create(:buffer_item, :phrase => "walk the dog")
+      @user = Factory.create(:user)
+      @buffer_item = Factory.create(:buffer_item, :user => @user, :phrase => "walk the dog")
+    end
+
+    after :each do
+      @appt.try(:save!)
     end
 
     it "can be assigned using a date and time" do
-      appt = Factory.create(:appointment, :args => "appt 1 4/12/11 at 5 pm")
-      appt.occurs_at.should == Time.new(2011,04,12,17,0)
+      @appt = Appointment.process!(:user_id => @user.id, :args => "mk appt 1 4/12/11 at 5 pm")
+      @appt.occurs_at.should == Time.new(2011,04,12,17,0)
     end
 
     it "can be assigned using days from now" do
-      appt = Factory.create(:appointment, :args => "appt 1 4 days from now at 10 am")
-      now = Time.now
-      appt.occurs_at.should == Time.new(now.year,now.month,now.day+4,10,0)
+      class << Time
+        def now
+          Time.new(2011,4,18)
+        end
+      end
+
+      @appt = Appointment.process!(:user_id => @user.id, :args => "make appt 1 4 days from now at 10 am")
+      @appt.occurs_at.should == Time.new(2011,4,22,10)
+      #TODO this fails at the end of the month
     end
 
   end

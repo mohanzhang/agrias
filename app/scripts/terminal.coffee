@@ -11,7 +11,7 @@ commandMap = (() =>
       "buf (.+)": ["POST", "/buffer_items/args"]
       "(make|mk) aspect (.+)": ["POST", "/aspects/args"]
       "(make|mk) task (.+)": ["POST", "/tasks/args"]
-      "(make|mk) appt (.+)": ["POST", "/appointments"]
+      "(make|mk) appt (.+)": ["POST", "/appointments/args"]
 
       "(move|mv) aspect (.+)": ["POST", "/aspects/process"]
 

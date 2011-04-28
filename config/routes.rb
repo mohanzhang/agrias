@@ -22,6 +22,7 @@ Agrias::Application.routes.draw do
   end
 
   resources :appointments do
+    post :args, :on => :collection
     post :attended, :on => :member
   end
 
