@@ -24,6 +24,26 @@ module ArgDriven
     end
   end
 
+  class AmbiguousArgsError < StandardError
+    def intitialize(arg)
+      @arg = arg
+    end
+
+    def message
+      "The provided argument: '#{@arg}' was ambiguous"
+    end
+  end
+
+  class NotFoundArgError < StandardError
+    def intitialize(arg)
+      @arg = arg
+    end
+
+    def message
+      "The provided argument: '#{@arg}' was not found"
+    end
+  end
+
   module ClassMethods
     def on(arg_map)
       class_eval <<-EOV

@@ -85,24 +85,27 @@ describe Aspect do
   describe "arg driven" do
     before :each do
       @user = Factory.create(:user)
-      @aspect = Factory.create(:aspect, :user => @user, :name => "Work and stuff")
+      @parent = Factory.create(:aspect, :user => @user, :name => "Work and stuff")
+    end
+
+    after :each do
+      @aspect.try(:save!)
     end
 
     it "can be created underneath a parent" do
-      aspect = Aspect.process!(:user_id => @user.id, :args => "make aspect test 3 under work")
-      aspect.save!
-      aspect.should be_valid
-      aspect.parent.should == @aspect
+      @aspect = Aspect.process!(:user_id => @user.id, :args => "make aspect test 3 under work")
+      @aspect.should be_valid
+      @aspect.parent.should == @parent
     end
 
     it "can be created as a root" do
-      aspect = Aspect.process!(:user_id => @user.id, :args => "make aspect Hello 2 as root")
-      aspect.name.should == "Hello"
+      @aspect = Aspect.process!(:user_id => @user.id, :args => "make aspect Hello 2 as root")
+      @aspect.name.should == "Hello"
     end
 
     it "should be created with a weight" do
-      aspect = Aspect.process!(:user_id => @user.id, :args => "mk aspect Hello 3 as root")
-      aspect.weight.should == 3
+      @aspect = Aspect.process!(:user_id => @user.id, :args => "mk aspect Hello 3 as root")
+      @aspect.weight.should == 3
     end
 
     it "can't be created under another user's aspect" do
@@ -114,6 +117,20 @@ describe Aspect do
 
       aspect = Aspect.process!(:user_id => u1.id, :args => "mk aspect Hello 2 under test")
       aspect.should_not be_valid
+    end
+
+    it "can be moved under another aspect" do
+      @aspect = Factory.create(:aspect, :user => @user, :name => "Test")
+      @aspect = Aspect.process!(:user_id => @user.id, :args => "move aspect test under work")
+      @aspect.parent.should == @parent
+    end
+
+    it "can't be moved under another user's aspect" do
+      thirdparty = Factory.create(:user)
+      thirdpartyparent = Factory.create(:aspect, :user => thirdparty, :name => "Third Party")
+
+      aspect = Factory.create(:aspect, :user => @user, :name => "Test")
+      lambda {Aspect.process!(:user_id => @user.id, :args => "mv aspect test under third")}.should raise_error(ArgDriven::NotFoundArgError)
     end
   end
 end

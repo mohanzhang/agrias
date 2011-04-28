@@ -13,7 +13,7 @@ commandMap = (() =>
       "(make|mk) task (.+)": ["POST", "/tasks/args"]
       "(make|mk) appt (.+)": ["POST", "/appointments/args"]
 
-      "(move|mv) aspect (.+)": ["POST", "/aspects/process"]
+      "(move|mv) aspect (.+)": ["POST", "/aspects/args"]
 
       "next":["GET", "/visualization/priority"]
       "table":["GET", "/visualization/table"]

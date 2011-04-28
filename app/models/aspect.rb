@@ -12,7 +12,8 @@ class Aspect < ActiveRecord::Base
   scope :with_clue, lambda {|clue| where("upper(name) like ?", clue.upcase + "%")}
 
   on /(make|mk) aspect (.+) (\d) under (.+)/ => :create_child_aspect,
-    /(make|mk) aspect (.+) (\d) as root/ => :create_root_aspect
+    /(make|mk) aspect (.+) (\d) as root/ => :create_root_aspect,
+    /(move|mv) aspect (.+) under (.+)/ => :move_aspect
 
   # an aspect's tasks is its tasks in priority order and then the tasks of
   # its children by weight
@@ -27,6 +28,19 @@ class Aspect < ActiveRecord::Base
   end
 
   private
+
+  def self.find_unique_by_arg_clue(parent_scope, arg)
+    aspect = parent_scope.aspects.with_clue(arg)
+    if aspect.size > 1
+      raise ArgDriven::AmbiguousArgError.new(arg)
+    elsif aspect.size == 0
+      raise ArgDriven::NotFoundArgError.new(arg)
+    else
+      aspect = aspect.first
+    end
+
+    return aspect
+  end
 
   def self.create_child_aspect(matchdata, params)
     current_user = User.find(params[:user_id])
@@ -59,5 +73,18 @@ class Aspect < ActiveRecord::Base
     aspect.name = matchdata[2]
     aspect.weight = matchdata[3].to_i
     aspect
+  end
+
+  def self.move_aspect(matchdata, params)
+    current_user = User.find(params[:user_id])
+    aspect_clue = matchdata[2]
+    parent_clue = matchdata[3]
+
+    aspect = find_unique_by_arg_clue(current_user, aspect_clue)
+    parent = find_unique_by_arg_clue(current_user, parent_clue)
+
+    aspect.parent = parent
+
+    return aspect
   end
 end

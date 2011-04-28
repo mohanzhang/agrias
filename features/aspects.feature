@@ -23,3 +23,9 @@ Feature: Aspects
     When I enter the command "mk aspect Hello 3 under social"
     Then I should see a result with "Hello"
     And I should see a result with "Parent: Social"
+
+  @javascript
+  Scenario: Move aspect under another
+    When I enter the command "mv aspect Work under social"
+    Then I should see a result with "Work"
+    And I should see a result with "Parent: Social"
