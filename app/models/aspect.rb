@@ -1,4 +1,6 @@
 class Aspect < ActiveRecord::Base
+  include ArgDriven
+
   belongs_to :user
   validates :user_id, :presence => true
 
@@ -9,11 +11,9 @@ class Aspect < ActiveRecord::Base
   
   scope :with_clue, lambda {|clue| where("upper(name) like ?", clue.upcase + "%")}
 
-  attr_accessor :args
-
-  before_validation(:on => :create) do
-    process_args! if self.args
-  end
+  on /(make|mk) aspect (.+) (\d) under (.+)/ => :create_child_aspect,
+    /(make|mk) aspect (.+) (\d) as root/ => :create_root_aspect,
+    /(move|mv) aspect (.+) under (.+)/ => :move_aspect
 
   # an aspect's tasks is its tasks in priority order and then the tasks of
   # its children by weight
@@ -29,31 +29,62 @@ class Aspect < ActiveRecord::Base
 
   private
 
-  def process_args!
-    current_user = User.find(self.user_id)
-    if self.args.match(/aspect (.+) (\d) under (.+)/)
-      name = $1
-      weight = $2.to_i
-      parent_clue = $3
-
-      parents = current_user.aspects.with_clue(parent_clue)
-
-      if parents.size > 1
-        self.errors.add(:args, "specified an ambiguous parent")
-      elsif parents.size == 0
-        self.errors.add(:args, "specified a parent that did not exist")
-      else
-        self.parent = parents.first
-      end
-
-      self.name = name
-      self.weight = weight
-    elsif self.args.match(/aspect (.+) (\d) as root/)
-      self.name = $1
-      self.weight = $2.to_i
+  def self.find_unique_by_arg_clue(parent_scope, arg)
+    aspect = parent_scope.aspects.with_clue(arg)
+    if aspect.size > 1
+      raise ArgDriven::AmbiguousArgError.new(arg)
+    elsif aspect.size == 0
+      raise ArgDriven::NotFoundArgError.new(arg)
     else
-      self.errors.add(:args, "are invalid")
+      aspect = aspect.first
     end
+
+    return aspect
   end
-      
+
+  def self.create_child_aspect(matchdata, params)
+    current_user = User.find(params[:user_id])
+    aspect = current_user.aspects.build
+
+    name = matchdata[2]
+    weight = matchdata[3].to_i
+    parent_clue = matchdata[4]
+
+    parents = current_user.aspects.with_clue(parent_clue)
+
+    if parents.size > 1
+      aspect.arg_errors << "specified an ambiguous parent"
+    elsif parents.size == 0
+      aspect.arg_errors << "specified a parent that did not exist"
+    else
+      aspect.parent = parents.first
+    end
+
+    aspect.name = name
+    aspect.weight = weight
+
+    return aspect
+  end
+
+  def self.create_root_aspect(matchdata, params)
+    current_user = User.find(params[:user_id])
+    aspect = current_user.aspects.build
+
+    aspect.name = matchdata[2]
+    aspect.weight = matchdata[3].to_i
+    aspect
+  end
+
+  def self.move_aspect(matchdata, params)
+    current_user = User.find(params[:user_id])
+    aspect_clue = matchdata[2]
+    parent_clue = matchdata[3]
+
+    aspect = find_unique_by_arg_clue(current_user, aspect_clue)
+    parent = find_unique_by_arg_clue(current_user, parent_clue)
+
+    aspect.parent = parent
+
+    return aspect
+  end
 end

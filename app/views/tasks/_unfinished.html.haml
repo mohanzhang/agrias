@@ -1,0 +1,14 @@
+- not_started, in_progress, waiting = unfinished
+
+%h2 Tasks Waiting for Resolution
+%ol
+  - waiting.each do |task|
+    %li= extend_task_link(task)
+%h2 Tasks In Progress
+%ol
+  - in_progress.each do |task|
+    %li= extend_task_link(task)
+%h2 Tasks Not Started
+%ol
+  - not_started.each do |task|
+    %li= extend_task_link(task)

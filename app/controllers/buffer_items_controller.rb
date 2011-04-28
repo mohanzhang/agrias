@@ -1,6 +1,4 @@
 class BufferItemsController < InheritedResources::Base
-  before_filter :pass_args, :only => [:create]
-
   respond_to :html, :json
 
   layout false

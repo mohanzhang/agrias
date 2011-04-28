@@ -1,4 +1,6 @@
 class Task < ActiveRecord::Base
+  include ArgDriven
+
   belongs_to :aspect
 
   validates :aspect, :leaf => true
@@ -8,11 +10,9 @@ class Task < ActiveRecord::Base
   validates :importance, :presence => true, :inclusion => {:in => 1..3}
   validates :state, :presence => true, :inclusion => {:in => 1..4}
 
-  attr_accessor :args, :user_id
+  on /(mk|make) task (\d+) under (.+) due (.+) i(\d)/ => :create_task
 
-  before_validation(:on => :create) do
-    process_args! if self.args
-  end
+  attr_accessor :user_id
 
   after_save(:on => :create) do
     origin = BufferItem.find_by_phrase(self.description)
@@ -47,23 +47,26 @@ class Task < ActiveRecord::Base
 
   private
 
-  def process_args!
-    current_user = User.find(self.user_id)
-    self.args.match(/task (\d+) under (.+) due (.+) i(\d)/) do |match|
-      buffer_item_index = match[1]
-      aspect_clue = match[2]
-      due_string = match[3]
-      importance = match[4].to_i
+  def self.create_task(matchdata, params)
+    current_user = User.find(params[:user_id])
 
-      self.aspect = (a = current_user.aspects.with_clue(aspect_clue)) ? a.first : a
-      self.description = current_user.buffer_items.all[buffer_item_index.to_i - 1].phrase
-      self.importance = importance
-      self.state = NOT_STARTED
-      if (time = Chronic.parse(due_string))
-        self.due_on = time.to_date
-      else
-        self.errors.add(:args, "did not specify a due date")
-      end
+    task = Task.new
+
+    buffer_item_index = matchdata[2]
+    aspect_clue = matchdata[3]
+    due_string = matchdata[4]
+    importance = matchdata[5].to_i
+
+    task.aspect = (a = current_user.aspects.with_clue(aspect_clue)) ? a.first : a
+    task.description = current_user.buffer_items.all[buffer_item_index.to_i - 1].phrase
+    task.importance = importance
+    task.state = NOT_STARTED
+    if (time = Chronic.parse(due_string))
+      task.due_on = time.to_date
+    else
+      task.arg_errors << "did not specify a due date"
     end
+
+    return task
   end
 end

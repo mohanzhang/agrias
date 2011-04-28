@@ -8,12 +8,15 @@ commandMap = (() =>
       "appts": ["GET", "/appointments"]
       "tasks": ["GET", "/tasks"]
 
-      "buf (.+)": ["POST", "/buffer_items"]
-      "(make|mk) aspect (.+)": ["POST", "/aspects"]
-      "(make|mk) task (.+)": ["POST", "/tasks"]
-      "(make|mk) appt (.+)": ["POST", "/appointments"]
+      "buf (.+)": ["POST", "/buffer_items/args"]
+      "(make|mk) aspect (.+)": ["POST", "/aspects/args"]
+      "(make|mk) task (.+)": ["POST", "/tasks/args"]
+      "(make|mk) appt (.+)": ["POST", "/appointments/args"]
+
+      "(move|mv) aspect (.+)": ["POST", "/aspects/args"]
 
       "next":["GET", "/visualization/priority"]
+      "table":["GET", "/visualization/table"]
     
     ret = {}
 
@@ -68,7 +71,7 @@ $ () =>
         type: routes[0][0],
         url: routes[0][1],
         data:
-          args: input.substring(input.indexOf(' '), input.length),
+          args: input
         success: (data) =>
           writeLine(new ResultBubble(data), [
             ((id, object) => object.find(".rest_in_place").rest_in_place()),

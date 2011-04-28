@@ -1,0 +1,12 @@
+%h2 Table View
+%table
+  %tr
+    - @aspects.each do |aspect|
+      %th
+        = extend_link aspect, :name
+  %tr
+    - @aspects.each do |aspect|
+      %td
+        = render :partial => "tasks/unfinished", :object => [aspect.tasks(:state => Task::NOT_STARTED),
+          aspect.tasks(:state => Task::IN_PROGRESS),
+          aspect.tasks(:state => Task::WAITING)]

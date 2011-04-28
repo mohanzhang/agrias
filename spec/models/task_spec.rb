@@ -74,32 +74,38 @@ describe Task do
     end
   end
 
-  describe "create using args" do
+  describe "arg driven" do
     before :each do
       @user = Factory.create(:user)
       @buffer_item = Factory.create(:buffer_item, :user => @user, :phrase => "walk the dog")
       @aspect = Factory.create(:aspect, :user => @user, :name => "Work and stuff")
     end
 
+    after :each do
+      if @task
+        @task.save!
+      end
+    end
+
     it "can be created underneath a parent" do
-      task = Factory.create(:task, :args => "task 1 under work due in 2 days i1", :user_id => @user.id)
-      task.aspect.should == @aspect
+      @task = Task.process!(:args => "mk task 1 under work due in 2 days i1", :user_id => @user.id)
+      @task.aspect.should == @aspect
     end
 
     it "can be assigned a due date using days" do
-      task = Factory.create(:task, :args => "task 1 under work due in 2 days i2", :user_id => @user.id)
-      task.due_on.should == 2.days.from_now.to_date
+      @task = Task.process!(:args => "make task 1 under work due in 2 days i2", :user_id => @user.id)
+      @task.due_on.should == 2.days.from_now.to_date
     end
 
     it "can be assigned a due date using a date" do
-      task = Factory.create(:task, :args => "task 1 under work due Apr 12, 2011 i3", :user_id => @user.id)
-      task.due_on.should == Date.new(2011,4,12)
+      @task = Task.process!(:args => "make task 1 under work due Apr 12, 2011 i3", :user_id => @user.id)
+      @task.due_on.should == Date.new(2011,4,12)
       #TODO this breaks when the month is in the new year
     end
 
     it "can assign the importance" do
-      task = Factory.create(:task, :args => "task 1 under work due 4/12/11 i3", :user_id => @user.id)
-      task.importance.should == 3
+      @task = Task.process!(:args => "mk task 1 under work due 4/12/11 i3", :user_id => @user.id)
+      @task.importance.should == 3
     end
 
     it "can't be created under another user's aspect" do
@@ -108,7 +114,7 @@ describe Task do
       a1 = Factory.create(:aspect, :user => @user, :name => "Blah blah")
       a2 = Factory.create(:aspect, :user => u2, :name => "Test")
 
-      Factory.build(:task, :args => "task 1 under test due 4/12/11 i3", :user_id => @user.id).should_not be_valid
+      task = Task.process!(:args => "make task 1 under test due 4/12/11 i3", :user_id => @user.id).should_not be_valid
     end
   end
 end
