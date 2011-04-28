@@ -7,6 +7,6 @@
   %tr
     - @aspects.each do |aspect|
       %td
-        %ul
-          - aspect.tasks.each do |task|
-            %li= extend_link task, :description
+        = render :partial => "tasks/unfinished", :object => [aspect.tasks(:state => Task::NOT_STARTED),
+          aspect.tasks(:state => Task::IN_PROGRESS),
+          aspect.tasks(:state => Task::WAITING)]
