@@ -8,7 +8,7 @@ commandMap = (() =>
       "appts": ["GET", "/appointments"]
       "tasks": ["GET", "/tasks"]
 
-      "buf (.+)": ["POST", "/buffer_items"]
+      "buf (.+)": ["POST", "/buffer_items/args"]
       "(make|mk) aspect (.+)": ["POST", "/aspects/args"]
       "(make|mk) task (.+)": ["POST", "/tasks"]
       "(make|mk) appt (.+)": ["POST", "/appointments"]

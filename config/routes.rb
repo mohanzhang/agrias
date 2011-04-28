@@ -5,7 +5,10 @@ Agrias::Application.routes.draw do
 
   match "echo", :to => "terminal#echo"
   
-  resources :buffer_items
+  resources :buffer_items do
+    post :args, :on => :collection
+  end
+
   resources :aspects do
     post :args, :on => :collection
   end

@@ -1,4 +1,6 @@
 class BufferItem < ActiveRecord::Base
+  include ArgDriven
+
   belongs_to :user
   validates :user_id, :presence => true
 
@@ -6,19 +8,17 @@ class BufferItem < ActiveRecord::Base
 
   default_scope order("created_at ASC")
 
-  attr_accessor :args
+  on /buf (.+)/ => :create_buffer_item
 
-  before_validation(:on => :create) do
-    process_args! if self.args
-  end
 
   private
 
-  def process_args!
-    if self.args.match(/(.+)/)
-      self.phrase = $1
-    else
-      self.errors.add(:args, "were empty")
-    end
+  def self.create_buffer_item(matchdata, params)
+    current_user = User.find(params[:user_id])
+    buffer_item = current_user.buffer_items.build
+
+    buffer_item.phrase = matchdata[1]
+
+    return buffer_item
   end
 end
